@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+
+  mysql:
+    container_name: mysql-local
+    image: mysql:5.6.35
+    network_mode: host
+    restart: 'no'
+    tty: true
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dbname
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbpass
+    volumes:
+      - mysql:/var/lib/mysql
+
+  php:
+    container_name: php-local
+    image: php:7.2-apache
+    network_mode: host
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    expose:
+      - 80
+    volumes:
+      - ./:/var/www/html
+
+volumes:
+  mysql:
+  html:                                  
