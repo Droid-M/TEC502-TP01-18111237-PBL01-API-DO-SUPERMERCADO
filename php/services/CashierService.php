@@ -1,8 +1,11 @@
 <?php
 
-use php\models\repository\CashierRepository;
+namespace php\services;
 
-$cashierRepository922939s399222 = new CashierRepository();
+use php\models\repository\CashierRepository;
+use php\models\repository\ProductRepository;
+
+$cashierRepository922939s399222 = new ProductRepository();
 class CashierService
 {
     public static function list()

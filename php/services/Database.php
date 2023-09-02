@@ -1,5 +1,9 @@
 <?php
 
+namespace php\services;
+
+use PDO;
+use PDOException;
 use php\services\Response;
 
 /** @var null|PDO $pdo19293s8389210283383801 */

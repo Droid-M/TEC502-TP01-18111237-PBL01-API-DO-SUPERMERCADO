@@ -2,6 +2,7 @@
 
 namespace php\services;
 
+use Closure;
 use php\middlewares\Middleware;
 
 $request102392039s2k20202 = [];
@@ -14,8 +15,14 @@ class Request
         if (filter_var($clientIP, FILTER_VALIDATE_IP)) {
             return $clientIP;
         } else {
-            return null; // Endereço IP inválido
+            return null; // Invalid IP
         }
+    }
+
+    public static function getRequestData()
+    {
+        global $request102392039s2k20202;
+        return $request102392039s2k20202;
     }
 
     public static function registerRequest(array $newRequest)
@@ -29,17 +36,8 @@ class Request
         } else {
             $newRequest["input_parameters"] = json_decode(file_get_contents("php://input"), 1);
         }
-
         $request102392039s2k20202["headers"] = $_SERVER;
     }
-    // if (!$selectedRoute["is_callback"]) {
-    //     $controller = $selectedRoute["controller_path"];
-    //     $method = $selectedRoute["controller_method"];
-    //     return (new $controller())->$method(...$parameters);
-    // } else {
-    //     $callback = $selectedRoute["callback"];
-    //     return $callback(...$parameters);
-    // }
 
     public static function getPath(): string
     {
@@ -90,5 +88,17 @@ class Request
     {
         global $request102392039s2k20202;
         return is_null($key) ? $request102392039s2k20202["middlewares"] : array_get($request102392039s2k20202["middlewares"], $key);
+    }
+
+    public static function usesCallback(): bool
+    {
+        global $request102392039s2k20202;
+        return $request102392039s2k20202["is_callback"];
+    }
+
+    public static function getCallback(): Closure
+    {
+        global $request102392039s2k20202;
+        return $request102392039s2k20202["callback"];
     }
 }

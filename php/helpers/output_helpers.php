@@ -34,7 +34,7 @@ function dump_array($array, $indent = 0)
     die(1);
 }
 
-// IMPORTANT - O trecho de código abaixo foi adaptado de "https://stackoverflow.com/a/47964924"
+// IMPORTANT - The code snippet below was adapted from "https://stackoverflow.com/a/47964924"
 
 function pseud_dump(mixed $data)
 {

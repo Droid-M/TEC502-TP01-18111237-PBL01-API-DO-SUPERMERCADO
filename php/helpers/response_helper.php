@@ -11,3 +11,9 @@ function abort(string $status, null|string $message = null, array $content = [],
 {
     return Response::abort($status, $message, $content, $headerMessage);
 }
+
+function is_json($string)
+{
+    json_decode($string);
+    return (json_last_error() == JSON_ERROR_NONE);
+}

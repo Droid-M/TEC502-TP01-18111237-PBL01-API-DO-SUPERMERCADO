@@ -2,11 +2,11 @@
 
 namespace php\controllers;
 
-use CashierService;
+use php\services\CashierService;
 
 class CashierController
 {
-    public function info()
+    public function list()
     {
         return json(200, 'Informações sobre caixas consultada com sucesso!', CashierService::list());
     }

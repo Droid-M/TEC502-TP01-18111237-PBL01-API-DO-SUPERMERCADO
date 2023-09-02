@@ -5,7 +5,7 @@ namespace php\middlewares;
 use php\services\Request;
 use php\services\Response;
 
-class UnlockedCashierMiddleware extends Middleware
+class IsAdminMiddleware extends Middleware
 {
     public function run()
     {

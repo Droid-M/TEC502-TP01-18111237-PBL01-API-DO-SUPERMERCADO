@@ -84,10 +84,10 @@ class Route
         $selectedRoute = $filteredRoutes[$requestMethod] ?? null;
         if (null == $selectedRoute)
             Response::abort(405);
-        static::runMiddlewares($selectedRoute["middlewares"]);
         $selectedRoute["path"] = $requestPath;
         $selectedRoute["path_parameters"] = static::get_path_parameters($requestPath, trim(remove_repeated_chars($selectedRoute["endpoint"]), '/'));
         Request::registerRequest($selectedRoute);
+        static::runMiddlewares($selectedRoute["middlewares"]);
         // ResponseService::abort(404, "Endpoint '$requestPath' não encontrado!");
     }
 
