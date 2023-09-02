@@ -25,4 +25,4 @@ use php\services\Route;
 Database::init();
 Route::treatRequestEndpoint();
 $response = Response::processRequest();
-Response::renderResponse();
+Response::renderResponse($response);

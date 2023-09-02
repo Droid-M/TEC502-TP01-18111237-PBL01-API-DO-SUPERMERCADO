@@ -2,8 +2,8 @@
 
 namespace php\models\repository;
 
-use Database;
 use PDO;
+use php\services\Database;
 
 abstract class Repository
 {
