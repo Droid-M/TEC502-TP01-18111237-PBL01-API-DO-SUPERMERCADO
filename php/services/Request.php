@@ -57,33 +57,33 @@ class Request
         return $request["controller_method"];
     }
 
-    public static function getPathParameters(): array
+    public static function getPathParameters(string|null $key = null): array
     {
         global $request;
-        return $request["path_parameters"];
+        return is_null($key) ? $request["path_parameters"] : array_get($request["path_parameters"], $key);
     }
 
-    public static function getInputParameters(): array
+    public static function getInputParameters(string|null $key = null): array
     {
         global $request;
-        return $request["input_parameters"];
+        return is_null($key) ? $request["input_parameters"] : array_get($request["input_parameters"], $key);
     }
 
-    public static function getQueryParameters(): array|null|string
+    public static function getQueryParameters(string|null $key = null): array|null|string
     {
         global $request;
-        return $request["query_parameters"];
+        return is_null($key) ? $request["query_parameters"] : array_get($request["query_parameters"], $key);
     }
 
-    public static function getHeaders(): array
+    public static function getHeaders(string|null $key = null): array
     {
         global $request;
-        return $request["headers"];
+        return is_null($key) ? $request["headers"] : array_get($request["headers"], $key);
     }
 
-    public static function getMiddlewares()
+    public static function getMiddlewares(string|null $key = null)
     {
         global $request;
-        return $request["middlewares"];
+        return is_null($key) ? $request["middlewares"] : array_get($request["middlewares"], $key);
     }
 }

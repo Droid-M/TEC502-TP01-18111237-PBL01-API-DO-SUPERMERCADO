@@ -2,10 +2,6 @@
 
 namespace php\services;
 
-require_once "../helpers/output_helpers.php";
-require_once "../helpers/router_helpers.php";
-require_once "../helpers/string_helpers.php";
-
 define("GET_METHOD", "GET");
 define("POST_METHOD", "POST");
 define("PUT_METHOD", "PUT");

@@ -8,8 +8,11 @@ spl_autoload_register(function ($className) {
     }
 });
 
+require_once "../helpers/array_helpers.php";
 require_once "../helpers/output_helpers.php";
+require_once "../helpers/response_helper.php";
 require_once "../helpers/router_helpers.php";
+require_once "../helpers/string_helpers.php";
 require_once "../routes/api.php";
 
 use php\models\repository\ProductRepository;
@@ -18,14 +21,14 @@ use php\services\Route;
 
 Route::treatRequestEndpoint();
 
-$dsn = 'mysql:host=localhost;dbname=smart_supermarket';
-$username = 'root';
-$password = '';
+// $dsn = 'mysql:host=localhost;dbname=smart_supermarket';
+// $username = 'root';
+// $password = '';
 
-try {
-    $pdo = new PDO($dsn, $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    dd([(new ProductRepository($pdo))->getById(1), [["34" => "nu"], ["ab" => "cd"]]]);
-} catch (PDOException $e) {
-    die('Erro de conexão: ' . $e->getMessage());
-}
+// try {
+//     $pdo = new PDO($dsn, $username, $password);
+//     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//     dd([(new ProductRepository($pdo))->getById(1), [["34" => "nu"], ["ab" => "cd"]]]);
+// } catch (PDOException $e) {
+//     die('Erro de conexão: ' . $e->getMessage());
+// }

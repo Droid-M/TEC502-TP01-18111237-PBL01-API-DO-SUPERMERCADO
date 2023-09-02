@@ -75,6 +75,7 @@ function dump(mixed $data)
 
 function dd(mixed $data)
 {
+    header("HTTP/1.0 500");
     echo pseud_dump($data) . "<br>\n";
     exit;
 }
