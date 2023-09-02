@@ -2,6 +2,8 @@
 
 namespace php\services;
 
+use php\middlewares\Middleware;
+
 $request = [];
 
 class Request
@@ -57,13 +59,13 @@ class Request
         return $request["controller_method"];
     }
 
-    public static function getPathParameters(string|null $key = null): array
+    public static function getPathParameters(string|null $key = null): array|null|string
     {
         global $request;
         return is_null($key) ? $request["path_parameters"] : array_get($request["path_parameters"], $key);
     }
 
-    public static function getInputParameters(string|null $key = null): array
+    public static function getInputParameters(string|null $key = null): array|null|string
     {
         global $request;
         return is_null($key) ? $request["input_parameters"] : array_get($request["input_parameters"], $key);
@@ -75,13 +77,16 @@ class Request
         return is_null($key) ? $request["query_parameters"] : array_get($request["query_parameters"], $key);
     }
 
-    public static function getHeaders(string|null $key = null): array
+    public static function getHeaders(string|null $key = null): array|null|string
     {
         global $request;
-        return is_null($key) ? $request["headers"] : array_get($request["headers"], $key);
+        if (is_null($key))
+            return $request["headers"];
+        $key = !str_starts_with($key, "HTTP_") ? 'HTTP_' . strtoupper($key) : strtoupper($key);
+        return array_get($request["headers"], $key);
     }
 
-    public static function getMiddlewares(string|null $key = null)
+    public static function getMiddlewares(string|null $key = null): array|null|string|Middleware
     {
         global $request;
         return is_null($key) ? $request["middlewares"] : array_get($request["middlewares"], $key);

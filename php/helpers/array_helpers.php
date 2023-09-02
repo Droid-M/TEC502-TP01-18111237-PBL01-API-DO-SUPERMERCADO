@@ -10,4 +10,5 @@ function array_get(array $array, string $key, mixed $default = null)
             return $default;
         }
     }
+    return $array;
 }
