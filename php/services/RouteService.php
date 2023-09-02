@@ -122,7 +122,7 @@ class RouteRegister
     {
         global $routes;
         if (is_string($this->controllerPathOrCallback)) {
-            $routes[$this->endpoint] = [
+            $routes[$requestMethod . $this->endpoint] = [
                 "method" => $requestMethod,
                 "endpoint" => $this->endpoint,
                 "controller_path" => $this->controllerPathOrCallback,
@@ -132,7 +132,7 @@ class RouteRegister
                 "middlewares" => $this->middlewares
             ];
         } else {
-            $routes[$this->endpoint] = [
+            $routes[$requestMethod . $this->endpoint] = [
                 "method" => $requestMethod,
                 "endpoint" => $this->endpoint,
                 "controller_path" => null,

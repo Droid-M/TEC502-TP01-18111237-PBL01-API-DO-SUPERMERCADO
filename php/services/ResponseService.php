@@ -14,7 +14,7 @@ class ResponseService
             "405" => "Método não permitido",
             default => ""
         };
-        header("HTTP/1.0 404 $headerMessage");
+        header("HTTP/1.0 $status $headerMessage");
         $content["message"] = $message;
         return json_encode($content);
     }
