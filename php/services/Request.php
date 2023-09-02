@@ -4,7 +4,7 @@ namespace php\services;
 
 use php\middlewares\Middleware;
 
-$request = [];
+$request102392039s2k20202 = [];
 
 class Request
 {
@@ -20,17 +20,17 @@ class Request
 
     public static function registerRequest(array $newRequest)
     {
-        global $request;
-        $request = $newRequest;
-        $request["query_parameters"] = $_GET;
+        global $request102392039s2k20202;
+        $request102392039s2k20202 = $newRequest;
+        $request102392039s2k20202["query_parameters"] = $_GET;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $request["input_parameters"] = $_POST;
+            $request102392039s2k20202["input_parameters"] = $_POST;
         } else {
             $newRequest["input_parameters"] = json_decode(file_get_contents("php://input"), 1);
         }
 
-        $request["headers"] = $_SERVER;
+        $request102392039s2k20202["headers"] = $_SERVER;
     }
     // if (!$selectedRoute["is_callback"]) {
     //     $controller = $selectedRoute["controller_path"];
@@ -43,52 +43,52 @@ class Request
 
     public static function getPath(): string
     {
-        global $request;
-        return $request["path"];
+        global $request102392039s2k20202;
+        return $request102392039s2k20202["path"];
     }
 
     public static function getControllerPath()
     {
-        global $request;
-        return $request["controller_path"];
+        global $request102392039s2k20202;
+        return $request102392039s2k20202["controller_path"];
     }
 
     public static function getControllerMethod()
     {
-        global $request;
-        return $request["controller_method"];
+        global $request102392039s2k20202;
+        return $request102392039s2k20202["controller_method"];
     }
 
     public static function getPathParameters(string|null $key = null): array|null|string
     {
-        global $request;
-        return is_null($key) ? $request["path_parameters"] : array_get($request["path_parameters"], $key);
+        global $request102392039s2k20202;
+        return is_null($key) ? $request102392039s2k20202["path_parameters"] : array_get($request102392039s2k20202["path_parameters"], $key);
     }
 
     public static function getInputParameters(string|null $key = null): array|null|string
     {
-        global $request;
-        return is_null($key) ? $request["input_parameters"] : array_get($request["input_parameters"], $key);
+        global $request102392039s2k20202;
+        return is_null($key) ? $request102392039s2k20202["input_parameters"] : array_get($request102392039s2k20202["input_parameters"], $key);
     }
 
     public static function getQueryParameters(string|null $key = null): array|null|string
     {
-        global $request;
-        return is_null($key) ? $request["query_parameters"] : array_get($request["query_parameters"], $key);
+        global $request102392039s2k20202;
+        return is_null($key) ? $request102392039s2k20202["query_parameters"] : array_get($request102392039s2k20202["query_parameters"], $key);
     }
 
     public static function getHeaders(string|null $key = null): array|null|string
     {
-        global $request;
+        global $request102392039s2k20202;
         if (is_null($key))
-            return $request["headers"];
+            return $request102392039s2k20202["headers"];
         $key = !str_starts_with($key, "HTTP_") ? 'HTTP_' . strtoupper($key) : strtoupper($key);
-        return array_get($request["headers"], $key);
+        return array_get($request102392039s2k20202["headers"], $key);
     }
 
     public static function getMiddlewares(string|null $key = null): array|null|string|Middleware
     {
-        global $request;
-        return is_null($key) ? $request["middlewares"] : array_get($request["middlewares"], $key);
+        global $request102392039s2k20202;
+        return is_null($key) ? $request102392039s2k20202["middlewares"] : array_get($request102392039s2k20202["middlewares"], $key);
     }
 }

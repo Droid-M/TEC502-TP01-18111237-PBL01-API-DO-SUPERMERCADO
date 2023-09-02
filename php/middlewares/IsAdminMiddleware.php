@@ -9,6 +9,7 @@ class UnlockedCashierMiddleware extends Middleware
 {
     public function run()
     {
-        // Request::getHeaders()
+        if (Request::getHeaders(ADMIN_TOKEN_KEY) != env(ADMIN_TOKEN_KEY))
+            Response::abort('403', 'Restrito somente para administradores!');
     }
 }

@@ -11,7 +11,7 @@ use Closure;
 use php\middlewares\Middleware;
 use php\services\Request;
 
-$routes = [];
+$routes0209292309s239s2k2k = [];
 
 class Route
 {
@@ -69,11 +69,11 @@ class Route
 
     public static function treatRequestEndpoint()
     {
-        global $routes;
+        global $routes0209292309s239s2k2k;
         $requestPath = static::requestPath();
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         $filteredRoutes = [];
-        foreach ($routes as $route) {
+        foreach ($routes0209292309s239s2k2k as $route) {
             $definedUri = trim(remove_repeated_chars($route["endpoint"]), '/');
             if (static::uri_match($requestPath, $definedUri)) {
                 $filteredRoutes[$route["method"]] = $route;
@@ -116,9 +116,9 @@ class RouteRegister
 
     protected function registerEndpoint(string $requestMethod)
     {
-        global $routes;
+        global $routes0209292309s239s2k2k;
         if (is_string($this->controllerPathOrCallback)) {
-            $routes[$requestMethod . $this->endpoint] = [
+            $routes0209292309s239s2k2k[$requestMethod . $this->endpoint] = [
                 "method" => $requestMethod,
                 "endpoint" => $this->endpoint,
                 "controller_path" => $this->controllerPathOrCallback,
@@ -128,7 +128,7 @@ class RouteRegister
                 "middlewares" => $this->middlewares
             ];
         } else {
-            $routes[$requestMethod . $this->endpoint] = [
+            $routes0209292309s239s2k2k[$requestMethod . $this->endpoint] = [
                 "method" => $requestMethod,
                 "endpoint" => $this->endpoint,
                 "controller_path" => null,

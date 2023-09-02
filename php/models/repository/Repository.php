@@ -2,6 +2,7 @@
 
 namespace php\models\repository;
 
+use Database;
 use PDO;
 
 abstract class Repository
@@ -9,9 +10,9 @@ abstract class Repository
     protected PDO $db;
     protected string $tableName;
 
-    public function __construct(PDO $db)
+    public function __construct(PDO|null $db = null)
     {
-        $this->db = $db;
+        $this->db = $db ?: Database::getPDO();
     }
 
     public function getByColumn(string $columnName, $columnValue, array $columns = [])
