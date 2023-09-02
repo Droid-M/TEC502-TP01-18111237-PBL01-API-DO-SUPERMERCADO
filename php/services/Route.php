@@ -13,11 +13,11 @@ define("DELETE_METHOD", "DELETE");
 
 use Closure;
 use php\middlewares\Middleware;
-use php\services\RequestService;
+use php\services\Request;
 
 $routes = [];
 
-class RouteService
+class Route
 {
     /* ------------------------------------ Registram rotas ----------------------------------- */
 
@@ -84,14 +84,14 @@ class RouteService
             }
         }
         if (!sizeof($filteredRoutes))
-            ResponseService::abort(404, "Endpoint '$requestPath' não encontrado!");
+            Response::abort(404, "Endpoint '$requestPath' não encontrado!");
         $selectedRoute = $filteredRoutes[$requestMethod] ?? null;
         if (null == $selectedRoute)
-            ResponseService::abort(405);
+            Response::abort(405);
         static::runMiddlewares($selectedRoute["middlewares"]);
         $selectedRoute["path"] = $requestPath;
         $selectedRoute["path_parameters"] = static::get_path_parameters($requestPath, trim(remove_repeated_chars($selectedRoute["endpoint"]), '/'));
-        RequestService::registerRequest($selectedRoute);
+        Request::registerRequest($selectedRoute);
         // ResponseService::abort(404, "Endpoint '$requestPath' não encontrado!");
     }
 

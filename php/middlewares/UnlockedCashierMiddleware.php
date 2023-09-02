@@ -2,8 +2,8 @@
 
 namespace php\middlewares;
 
-use php\services\RequestService;
-use php\services\ResponseService;
+use php\services\Request;
+use php\services\Response;
 
 class UnlockedCashierMiddleware extends Middleware
 {

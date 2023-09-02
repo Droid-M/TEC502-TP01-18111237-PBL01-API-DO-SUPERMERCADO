@@ -4,7 +4,7 @@ namespace php\services;
 
 $request = [];
 
-class RequestService
+class Request
 {
     public static function getClientIp()
     {

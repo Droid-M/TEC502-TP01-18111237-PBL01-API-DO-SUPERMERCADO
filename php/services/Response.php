@@ -2,7 +2,7 @@
 
 namespace php\services;
 
-class ResponseService
+class Response
 {
     public static function json(string $status, string|null $message = null, array $content = [], string $headerMessage = null)
     {

@@ -12,7 +12,7 @@ require_once "../helpers/output_helpers.php";
 require_once "../helpers/router_helpers.php";
 require_once "../routes/api.php";
 
-use php\services\ResponseService;
-use php\services\RouteService;
+use php\services\Response;
+use php\services\Route;
 
-RouteService::treatRequestEndpoint();
+Route::treatRequestEndpoint();
