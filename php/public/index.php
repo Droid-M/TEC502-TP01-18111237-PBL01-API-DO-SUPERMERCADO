@@ -15,5 +15,4 @@ require_once "../routes/api.php";
 use php\services\ResponseService;
 use php\services\RouteService;
 
-$response = RouteService::treatRequestEndpoint();
-echo json_encode($response);
+RouteService::treatRequestEndpoint();

@@ -12,6 +12,8 @@ define("PUT_METHOD", "PUT");
 define("DELETE_METHOD", "DELETE");
 
 use Closure;
+use php\middlewares\Middleware;
+use php\services\RequestService;
 
 $routes = [];
 
@@ -58,42 +60,45 @@ class RouteService
         return true;
     }
 
+    protected static function runMiddlewares(array $middlewares)
+    {
+        foreach ($middlewares as $middleware) {
+            if ($middleware instanceof Middleware) {
+                $middleware->run();
+            } else {
+                (new $middleware())->run();
+            }
+        }
+    }
 
     public static function treatRequestEndpoint()
     {
         global $routes;
-        $requestUri = trim(remove_repeated_chars(static::uri()), '/');
+        $requestPath = static::requestPath();
         $requestMethod = $_SERVER["REQUEST_METHOD"];
         $filteredRoutes = [];
         foreach ($routes as $route) {
             $definedUri = trim(remove_repeated_chars($route["endpoint"]), '/');
-            if (static::uri_match($requestUri, $definedUri)) {
+            if (static::uri_match($requestPath, $definedUri)) {
                 $filteredRoutes[$route["method"]] = $route;
             }
         }
         if (!sizeof($filteredRoutes))
-            ResponseService::abort(404, "Endpoint '$requestUri' não encontrado!");
+            ResponseService::abort(404, "Endpoint '$requestPath' não encontrado!");
         $selectedRoute = $filteredRoutes[$requestMethod] ?? null;
         if (null == $selectedRoute)
             ResponseService::abort(405);
-        $parameters = static::get_path_parameters($requestUri, trim(remove_repeated_chars($selectedRoute["endpoint"]), '/'));
-        echo json_encode($selectedRoute);
-        die;
-        if (!$selectedRoute["is_callback"]) {
-            $controller = $selectedRoute["controller_path"];
-            $method = $selectedRoute["controller_method"];
-            return (new $controller())->$method(...$parameters);
-        } else {
-            $callback = $selectedRoute["callback"];
-            return $callback(...$parameters);
-        }
-        ResponseService::abort(404, "Endpoint '$requestUri' não encontrado!");
+        static::runMiddlewares($selectedRoute["middlewares"]);
+        $selectedRoute["path"] = $requestPath;
+        $selectedRoute["path_parameters"] = static::get_path_parameters($requestPath, trim(remove_repeated_chars($selectedRoute["endpoint"]), '/'));
+        RequestService::registerRequest($selectedRoute);
+        // ResponseService::abort(404, "Endpoint '$requestPath' não encontrado!");
     }
 
     /* ---------------------- Captura informações de rotas ---------------------- */
-    public static function uri()
+    public static function requestPath()
     {
-        return explode('?', $_SERVER['REQUEST_URI'])[0];
+        return trim(remove_repeated_chars(explode('?', $_SERVER['REQUEST_URI'])[0]), '/');
     }
 }
 
@@ -102,6 +107,7 @@ class RouteRegister
     protected string|Closure $controllerPathOrCallback;
     protected string|null $controllerMethod;
     protected string $endpoint;
+    protected array $middlewares = [];
 
     public function __construct(string $endpoint, string|Closure $controllerPathOrCallback, string|null $controllerMethod = null)
     {
@@ -122,7 +128,8 @@ class RouteRegister
                 "controller_path" => $this->controllerPathOrCallback,
                 "controller_method" => $this->controllerMethod,
                 "callback" => null,
-                "is_callback" => false
+                "is_callback" => false,
+                "middlewares" => $this->middlewares
             ];
         } else {
             $routes[$this->endpoint] = [
@@ -131,7 +138,8 @@ class RouteRegister
                 "controller_path" => null,
                 "controller_method" => null,
                 "callback" => $this->controllerPathOrCallback,
-                "is_callback" => true
+                "is_callback" => true,
+                "middlewares" => $this->middlewares
             ];
         }
     }
@@ -154,5 +162,11 @@ class RouteRegister
     public function delete()
     {
         return static::registerEndpoint(DELETE_METHOD);
+    }
+
+    public function middleware(Middleware|string $middleware)
+    {
+        $this->middlewares[] = $middleware;
+        return $this;
     }
 }
