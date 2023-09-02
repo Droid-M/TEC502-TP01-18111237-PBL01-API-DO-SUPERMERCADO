@@ -9,7 +9,5 @@ class UnlockedCashierMiddleware extends Middleware
 {
     public function run()
     {
-        ResponseService::abort(403, "Apenas um test de middleware");
-        // RequestService::getClientIp();
     }
 }
