@@ -18,7 +18,6 @@ require_once "../helpers/string_helpers.php";
 require_once "../routes/api.php";
 
 use php\services\Database;
-use php\services\Request;
 use php\services\Response;
 use php\services\Route;
 

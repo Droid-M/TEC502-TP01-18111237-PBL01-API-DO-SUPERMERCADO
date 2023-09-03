@@ -9,7 +9,7 @@ class Purchase extends Model
     public ?int $id;
     public ?string $created_at;
     public ?float $total_value;
-    public ?bool $paid;
+    public ?string $status;
     public ?int $origin_cashier;
     public ?string $purchaser_name;
     public ?string $purchaser_cpf;
@@ -23,7 +23,7 @@ class Purchase extends Model
         'id',
         'created_at',
         'total_value',
-        'paid',
+        'status',
         'origin_cashier',
         'purchaser_name',
         'purchaser_cpf',
@@ -34,7 +34,7 @@ class Purchase extends Model
         ?int $id = null,
         ?string $created_at = null,
         ?float $total_value = null,
-        ?bool $paid = null,
+        ?string $status = null,
         ?int $origin_cashier = null,
         ?string $purchaser_name = null,
         ?string $purchaser_cpf = null,
@@ -43,7 +43,7 @@ class Purchase extends Model
         $this->id = $id;
         $this->created_at = $created_at;
         $this->total_value = $total_value;
-        $this->paid = $paid;
+        $this->status = $status;
         $this->origin_cashier = $origin_cashier;
         $this->purchaser_name = $purchaser_name;
         $this->purchaser_cpf = $purchaser_cpf;

@@ -12,7 +12,7 @@ class Cashier extends Model
     /**
      * @var Collection<string, Purchase>
      */
-    public Collection $registeredPurchases;
+    public Collection $registered_purchases;
 
     const COLUMNS = [
         'id', 
@@ -25,6 +25,6 @@ class Cashier extends Model
         $this->id = $id;
         $this->ip = $ip;
         $this->is_blocked = $is_blocked;
-        $this->registeredPurchases = new Collection();
+        $this->registered_purchases = new Collection();
     }
 }

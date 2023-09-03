@@ -10,6 +10,9 @@ define("DELETE_METHOD", "DELETE");
 use Closure;
 use php\middlewares\Middleware;
 use php\services\Request;
+use ReflectionClass;
+use ReflectionFunction;
+use tidy;
 
 $routes0209292309s239s2k2k = [];
 
@@ -27,8 +30,8 @@ class Route
     protected static function get_path_parameters(string $requestUri, string $definedUri)
     {
         $parameters = [];
-        $requestUri = split_route($requestUri);
-        $definedUri = split_route($definedUri);
+        $requestUri = split_endpoint($requestUri);
+        $definedUri = split_endpoint($definedUri);
         $uriSize = sizeof($requestUri);
         if ($uriSize != sizeof($definedUri))
             return null;
@@ -39,12 +42,22 @@ class Route
         return $parameters;
     }
 
+    protected static function get_path_parameters_name(string $path)
+    {
+        $names = [];
+        foreach (split_endpoint($path) as $p) {
+            if (preg_match('/^[a-zA-Z0-9]*\{[a-zA-Z0-9]*\}$/', $p))
+                $names[] = trim($p, '{}');
+        }
+        return $names;
+    }
+
     protected static function uri_match(string $requestUri, string $definedUri)
     {
         // if (strlen($definedUri) != strlen($requestUri))
         //     return false;
-        $requestUri = split_route($requestUri);
-        $definedUri = split_route($definedUri);
+        $requestUri = split_endpoint($requestUri);
+        $definedUri = split_endpoint($definedUri);
         $uriSize = sizeof($requestUri);
         if ($uriSize != sizeof($definedUri))
             return false;
@@ -67,6 +80,35 @@ class Route
         }
     }
 
+    public static function parameters_match(array $selectedRouteData)
+    {
+        $parameters = static::get_path_parameters_name($selectedRouteData["endpoint"]);
+        $callableParameters = $selectedRouteData["is_callback"]
+            ? (new ReflectionFunction($selectedRouteData["callback"]))->getParameters()
+            : (new ReflectionClass($selectedRouteData["controller_path"]))->getMethod($selectedRouteData["controller_method"])->getParameters();
+        $length = sizeof($parameters);
+        if ($length != sizeof($callableParameters))
+            return false;
+        for ($i = 0; $i < $length; $i++) {
+            if ($parameters[$i] != $callableParameters[$i]->getName())
+                return false;
+        }
+        return true;
+    }
+
+    protected static function selectBestRouteMath(string $requestMethod, string $requestPath, array $routes)
+    {
+        $bestMatch = null;
+        foreach ($routes as $route) {
+            if ($requestMethod == $route["method"]) {
+                if(tidy_endpoint($route["endpoint"]) == tidy_endpoint($requestPath))
+                    return $route;
+                $bestMatch = $route;
+            } 
+        }
+        return $bestMatch;
+    }
+
     public static function treatRequestEndpoint()
     {
         global $routes0209292309s239s2k2k;
@@ -75,17 +117,20 @@ class Route
         $filteredRoutes = [];
         foreach ($routes0209292309s239s2k2k as $route) {
             $definedUri = trim(remove_repeated_chars($route["endpoint"]), '/');
-            if (static::uri_match($requestPath, $definedUri)) {
-                $filteredRoutes[$route["method"]] = $route;
+            if (
+                static::uri_match($requestPath, $definedUri)
+                // && static::parameters_match($requestPath, $route)
+            ) {
+                $filteredRoutes[$route["method"] . $route["endpoint"]] = $route;
             }
         }
         if (!sizeof($filteredRoutes))
             Response::abort(404, "Endpoint '$requestPath' não encontrado!");
-        $selectedRoute = $filteredRoutes[$requestMethod] ?? null;
+        $selectedRoute = static::selectBestRouteMath($requestMethod, $requestPath, $filteredRoutes);
         if (null == $selectedRoute)
             Response::abort(405);
         $selectedRoute["path"] = $requestPath;
-        $selectedRoute["path_parameters"] = static::get_path_parameters($requestPath, trim(remove_repeated_chars($selectedRoute["endpoint"]), '/'));
+        $selectedRoute["path_parameters"] = static::get_path_parameters($requestPath, $selectedRoute["endpoint"]);
         Request::registerRequest($selectedRoute);
         static::runMiddlewares($selectedRoute["middlewares"]);
         // ResponseService::abort(404, "Endpoint '$requestPath' não encontrado!");
@@ -160,9 +205,13 @@ class RouteRegister
         return static::registerEndpoint(DELETE_METHOD);
     }
 
-    public function middleware(Middleware|string $middleware)
+    /**
+     * @param Middleware[]|string[]|Middleware|string $middleware
+     * @return static
+     */
+    public function middleware(Middleware|string|array $middleware)
     {
-        $this->middlewares[] = $middleware;
+        $this->middlewares = array_merge($this->middlewares, (array) $middleware);
         return $this;
     }
 }

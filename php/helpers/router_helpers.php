@@ -2,12 +2,17 @@
 
 require_once "../helpers/string_helpers.php";
 
-function split_route(string $route)
+function split_endpoint(string $route)
 {
     return explode('/', trim(remove_repeated_chars($route), '/'));
 }
 
-function parse_route(string $route)
+function tidy_endpoint(string $path)
+{
+    return trim(remove_repeated_chars($path));
+}
+
+function parse_endpoint(string $route)
 {
     $paths = explode('/', $route);
     do {

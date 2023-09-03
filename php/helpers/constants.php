@@ -1,6 +1,7 @@
 <?php
 
 if (!defined('ADMIN_TOKEN_KEY')) define('ADMIN_TOKEN_KEY', 'ADMIN_TOKEN');
+if (!defined('CASHIER_TOKEN_KEY')) define('CASHIER_TOKEN_KEY', 'CASHIER_TOKEN');
 
 if (!defined('DATABASE_HOST_KEY')) define('DATABASE_HOST_KEY', 'DATABASE_HOST');
 if (!defined('DATABASE_NAME_KEY')) define('DATABASE_NAME_KEY', 'DATABASE_NAME');

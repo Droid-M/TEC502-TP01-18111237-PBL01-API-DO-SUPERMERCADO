@@ -6,11 +6,16 @@ use PDOException;
 
 trait Seedable
 {
-    // Function to generate a random value for the ENUM field 'payment_method'
     private static function randomPaymentMethod()
     {
         $paymentMethods = ['pix', 'credit_card', 'cash'];
         return $paymentMethods[array_rand($paymentMethods)];
+    }
+   
+    private static function randomPurchaseStatus()
+    {
+        $purchaseStatus = ['created', 'paid', 'canceled'];
+        return $purchaseStatus[array_rand($purchaseStatus)];
     }
 
     public static function seedTables()
@@ -33,16 +38,16 @@ trait Seedable
                 // Generate and insert cashier-related data in the 'purchases' table
                 for ($j = 1; $j <= 20; $j++) { // 20 compras por caixa
                     $total_value = number_format(rand(1, 1000) + (rand(0, 99) / 100), 2);
-                    $paid = rand(0, 1);
+                    $status = static::randomPurchaseStatus();
                     $purchaser_name = "Customer " . $i . "-" . $j;
                     $purchaser_cpf = str_pad(rand(1, 99999999999), 11, "0", STR_PAD_LEFT);
                     $payment_method = self::randomPaymentMethod();
 
-                    $sql = "INSERT INTO purchases (total_value, paid, origin_cashier, purchaser_name, purchaser_cpf, payment_method) 
-                            VALUES (:total_value, :paid, :origin_cashier, :purchaser_name, :purchaser_cpf, :payment_method)";
+                    $sql = "INSERT INTO purchases (total_value, status, origin_cashier, purchaser_name, purchaser_cpf, payment_method) 
+                            VALUES (:total_value, :status, :origin_cashier, :purchaser_name, :purchaser_cpf, :payment_method)";
                     $stmt = $pdo->prepare($sql);
                     $stmt->bindParam(':total_value', $total_value);
-                    $stmt->bindParam(':paid', $paid);
+                    $stmt->bindParam(':status', $status);
                     $stmt->bindParam(':origin_cashier', $cashierId);
                     $stmt->bindParam(':purchaser_name', $purchaser_name);
                     $stmt->bindParam(':purchaser_cpf', $purchaser_cpf);
