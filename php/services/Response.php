@@ -5,6 +5,13 @@ namespace php\services;
 $currentResponse101031031i220303 = null;
 class Response
 {
+    public static function encodeResponseContent(mixed $content)
+    {
+        if (is_object($content) && method_exists($content, 'toArray'))
+            return json_encode($content->toArray());
+        return json_encode((array) $content);
+    }
+
     public static function json(string $status, string|null $message = null, array $content = [], string $headerMessage = null)
     {
         $headerMessage = $headerMessage ?: match ($status) {
@@ -16,7 +23,7 @@ class Response
             default => ""
         };
         header("HTTP/1.0 $status $headerMessage");
-        return json_encode([
+        return static::encodeResponseContent([
             'message' => $message,
             'data' => $content
         ]);

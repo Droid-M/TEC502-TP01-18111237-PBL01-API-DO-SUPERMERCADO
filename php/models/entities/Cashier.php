@@ -2,17 +2,14 @@
 
 namespace php\models\entities;
 
-use php\traits\AttributesFillables;
 
-class Cashier
+class Cashier extends Model
 {
-    use AttributesFillables;
-    
-    public int $id;
-    public string $ip;
-    public bool $is_blocked;
+    public ?int $id;
+    public ?string $ip;
+    public ?bool $is_blocked;
 
-    public function __construct(int $id, string $ip, bool $is_blocked)
+    public function __construct(?int $id = null, ?string $ip = null, ?bool $is_blocked = null)
     {
         $this->id = $id;
         $this->ip = $ip;

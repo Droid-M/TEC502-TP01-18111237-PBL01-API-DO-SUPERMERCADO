@@ -2,19 +2,15 @@
 
 namespace php\models\entities;
 
-use php\traits\AttributesFillables;
-
-class Product
+class Product extends Model
 {
-    use AttributesFillables;
-    
-    public int $id;
-    public string $name;
-    public string $created_at;
-    public int $stock_quantity;
-    public string $bar_code;
+    public ?int $id;
+    public ?string $name;
+    public ?string $created_at;
+    public ?int $stock_quantity;
+    public ?string $bar_code;
 
-    public function __construct(int $id, string $name, string $created_at, int $stock_quantity, string $bar_code)
+    public function __construct(?int $id = null, ?string $name = null, ?string $created_at = null, ?int $stock_quantity = null, ?string $bar_code = null)
     {
         $this->id = $id;
         $this->name = $name;

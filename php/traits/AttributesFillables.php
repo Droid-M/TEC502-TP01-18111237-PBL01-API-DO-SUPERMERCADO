@@ -14,4 +14,11 @@ trait AttributesFillables
             }
         }
     }
+
+    public static function fromArray(array $data)
+    {
+        $instance = new static();
+        $instance->fillFromArray($data);
+        return $instance;
+    }
 }

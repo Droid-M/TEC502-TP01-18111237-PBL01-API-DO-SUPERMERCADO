@@ -2,17 +2,13 @@
 
 namespace php\models\entities;
 
-use php\traits\AttributesFillables;
-
-class PurchaseProduct
+class PurchaseProduct extends Model
 {
-    use AttributesFillables;
-    
-    public int $id;
-    public int $product_id;
-    public int $purchase_id;
+    public ?int $id;
+    public ?int $product_id;
+    public ?int $purchase_id;
 
-    public function __construct(int $id, int $product_id, int $purchase_id)
+    public function __construct(?int $id = null, ?int $product_id = null, ?int $purchase_id = null)
     {
         $this->id = $id;
         $this->product_id = $product_id;
