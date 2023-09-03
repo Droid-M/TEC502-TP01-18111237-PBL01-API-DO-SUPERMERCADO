@@ -12,3 +12,46 @@ function array_get(array $array, string $key, mixed $default = null)
     }
     return $array;
 }
+
+/**
+ * Adapted from @link https://stackoverflow.com/a/43004994
+ * @return array|mixed
+ */
+function array_map_assoc(callable $f, array $a)
+{
+    return array_replace_recursive(...array_map($f, array_keys($a), $a));
+}
+
+/**
+ * @param array $haystack
+ * @param array $keyMap ['old_key' => 'new_key']
+ * @return array
+ */
+function array_replace_keys($haystack, $keyMap)
+{
+    $arrayC = [];
+
+    foreach ($haystack as $key => $value) {
+        if (isset($keyMap[$key])) {
+            $newKey = $keyMap[$key];
+            $arrayC[$newKey] = $value;
+        } else {
+            $arrayC[$key] = $value;
+        }
+    }
+
+    return $arrayC;
+}
+
+function array_only(array $inputArray, array $allowedKeys)
+{
+    return array_intersect_key($inputArray, array_flip($allowedKeys));
+}
+
+function array_except(array $inputArray, array $keysToExclude)
+{
+    foreach ($keysToExclude as $key) {
+        unset($inputArray[$key]);
+    }
+    return $inputArray;
+}
