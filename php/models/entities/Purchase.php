@@ -2,6 +2,8 @@
 
 namespace php\models\entities;
 
+use php\helpers\Collection;
+
 class Purchase extends Model
 {
     public ?int $id;
@@ -12,6 +14,21 @@ class Purchase extends Model
     public ?string $purchaser_name;
     public ?string $purchaser_cpf;
     public ?string $payment_method;
+    /**
+     * @var Collection<int, Product>
+     */
+    public Collection $products;
+
+    const COLUMNS = [
+        'id',
+        'created_at',
+        'total_value',
+        'paid',
+        'origin_cashier',
+        'purchaser_name',
+        'purchaser_cpf',
+        'payment_method'
+    ];
 
     public function __construct(
         ?int $id = null,
@@ -31,5 +48,6 @@ class Purchase extends Model
         $this->purchaser_name = $purchaser_name;
         $this->purchaser_cpf = $purchaser_cpf;
         $this->payment_method = $payment_method;
+        $this->products = new Collection();
     }
 }

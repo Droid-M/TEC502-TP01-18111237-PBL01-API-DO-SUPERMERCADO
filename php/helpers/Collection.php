@@ -40,17 +40,25 @@ class Collection implements ArrayAccess
         }
     }
 
-    public function toArray()
+    private function convertToArray($items)
     {
         $result = [];
-        foreach ($this->items as $key => $item) {
+        foreach ($items as $key => $item) {
             if (is_object($item) && method_exists($item, 'toArray')) {
-                $result[$key] = $item->toArray();
+                $result[$key] = $this->convertToArray($item->toArray());
+            } elseif (is_array($item)) {
+                $result[$key] = $this->convertToArray($item);
             } else {
                 $result[$key] = $item;
             }
         }
         return $result;
+    }
+
+    public function toArray()
+    {
+        $itemsCopy = $this->items;
+        return $this->convertToArray($itemsCopy);
     }
 
     public function count()

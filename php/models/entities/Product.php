@@ -10,6 +10,14 @@ class Product extends Model
     public ?int $stock_quantity;
     public ?string $bar_code;
 
+    const COLUMNS = [
+        'id',
+        'name',
+        'created_at',
+        'stock_quantity',
+        'bar_code'
+    ];
+
     public function __construct(?int $id = null, ?string $name = null, ?string $created_at = null, ?int $stock_quantity = null, ?string $bar_code = null)
     {
         $this->id = $id;

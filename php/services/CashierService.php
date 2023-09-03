@@ -12,15 +12,5 @@ class CashierService
     {
         $cashierRepository = new CashierRepository();
         $purchaseRepository = new PurchaseRepository();
-        $cashiers = $cashierRepository->returnAsArray()->getAllById();
-        // foreach($cashiers as $cashier) {
-        //     $cashier[]
-        // }
-        dd($purchaseRepository->getAllManyToMany(
-            'products', 'purchase_product',
-            'purchases.id = purchase_product.purchase_id',
-            'products.id = purchase_product.product_id',
-        )); 
-
     }
 }

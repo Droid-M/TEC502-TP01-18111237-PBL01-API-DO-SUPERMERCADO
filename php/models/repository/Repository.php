@@ -141,28 +141,52 @@ abstract class Repository
         return $stmt->execute();
     }
 
-    public function getAllManyToMany(
+    /**
+     * Prefix the columns with the table names to avoid collisions and overlapping columns
+     * @param string $table
+     * @param array $columns
+     * @return string
+     */
+    private function prefixColumns(string $table, array $columns)
+    {
+        $separator = DATABASE_TABLE_COLUMN_SEPARATOR;
+        return empty($columns) ?
+            "$table.*"
+            : implode(', ', array_map(fn ($c) => "$table.$c as {$table}{$separator}$c", $columns));
+    }
+
+    /**
+     * Removes the column prefixes that were added in the 'prefixColumns()' method
+     * @return array
+     */
+    protected function removeColumnsPrefix($table, $columns)
+    {
+        $prefix = $table . DATABASE_TABLE_COLUMN_SEPARATOR;
+        return array_map_assoc(
+            fn ($k, $v) => str_starts_with($k, $prefix)
+                ? [substr($k, strlen($prefix)) => $v]
+                : [$k => $v],
+            $columns
+        );
+    }
+
+    public function getAllManyToManyById(
         string $relatedTable,
         string $joinTable,
         string|null $joinCondition1 = null,
         string|null $joinCondition2 = null,
         int|null $parentId = null,
-        array $columns = []
+        array $parentColumns = [],
+        array $relatedColumns = []
     ): array {
-        $selectedColumns = [];
-
-        foreach ($columns as $column) {
-            // Prefixar as colunas com o nome da tabela
-            $selectedColumns[] = "$relatedTable.$column as {$relatedTable}_$column";
-        }
-
-        $selectedColumns = empty($selectedColumns) ? '*' : implode(', ', $selectedColumns);
+        $parentColumns = $this->prefixColumns($this->tableName, $parentColumns);
+        $relatedColumns = $this->prefixColumns($relatedTable, $relatedColumns);
 
         $joinCondition1 = $joinCondition1 ?: "$this->tableName.id = $joinTable.{$this->tableName}_id";
         $joinCondition2 = $joinCondition2 ?: "$relatedTable.id = $joinTable.{$relatedTable}_id";
         $filterParentCondition = is_null($parentId) ? '' : "WHERE $this->tableName.id = :parentId";
 
-        $query = "SELECT $selectedColumns FROM $this->tableName
+        $query = "SELECT $parentColumns, $relatedColumns FROM $this->tableName
                   JOIN $joinTable ON $joinCondition1
                   JOIN $relatedTable ON $joinCondition2
                   $filterParentCondition";
@@ -172,6 +196,74 @@ abstract class Repository
             $stmt->bindParam(':parentId', $parentId, PDO::PARAM_INT);
         $stmt->execute();
 
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllManyToManyWithCondition(
+        string $relatedTable,
+        string $joinTable,
+        string $joinCondition1,
+        string $joinCondition2,
+        string $condition = '',
+        array $conditionValues = [],
+        array $parentColumns = [],
+        array $relatedColumns = []
+    ): array {
+        $parentColumns = $this->prefixColumns($this->tableName, $parentColumns);
+        $relatedColumns = $this->prefixColumns($relatedTable, $relatedColumns);
+
+        $query = "SELECT $parentColumns, $relatedColumns FROM $this->tableName
+                  JOIN $joinTable ON $joinCondition1
+                  JOIN $relatedTable ON $joinCondition2";
+        if (!empty($condition)) {
+            $query .= " WHERE $condition";
+        }
+        $stmt = $this->db->prepare($query);
+        foreach ($conditionValues as $paramName => $paramValue) {
+            $paramType = is_int($paramValue) ? PDO::PARAM_INT : PDO::PARAM_STR;
+            $stmt->bindParam($paramName, $paramValue, $paramType);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getWithJoin(
+        string $relatedTable,
+        string $joinCondition,
+        int $parentId,
+        array $parentColumns = [],
+        array $relatedColumns = []
+    ): array {
+        $parentColumns = $this->prefixColumns($this->tableName, $parentColumns);
+        $relatedColumns = $this->prefixColumns($relatedTable, $relatedColumns);
+        $query = "SELECT $parentColumns, $relatedColumns FROM $this->tableName
+                  LEFT JOIN $relatedTable ON $joinCondition
+                  WHERE $this->tableName.id = :parentId";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':parentId', $parentId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllWithJoin(
+        string $relatedTable,
+        string $joinCondition,
+        string $condition = '',
+        array $conditionValues = [],
+        array $parentColumns = [],
+        array $relatedColumns = []
+    ): array {
+        $parentColumns = $this->prefixColumns($this->tableName, $parentColumns);
+        $relatedTable = $this->prefixColumns($relatedTable, $relatedColumns);
+        $query = "SELECT $parentColumns, $relatedColumns FROM $this->tableName
+                  LEFT JOIN $relatedTable ON $joinCondition";
+        if (!empty($condition))
+            $query .= " WHERE $condition";
+        $stmt = $this->db->query($query);
+        foreach ($conditionValues as $paramName => $paramValue) {
+            $paramType = is_int($paramValue) ? PDO::PARAM_INT : PDO::PARAM_STR;
+            $stmt->bindParam($paramName, $paramValue, $paramType);
+        }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

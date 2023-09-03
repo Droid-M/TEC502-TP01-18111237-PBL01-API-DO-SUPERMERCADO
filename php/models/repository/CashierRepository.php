@@ -9,4 +9,9 @@ class CashierRepository extends Repository
 {
     protected string $tableName = 'cashiers';
     protected string $modelClass = Cashier::class;
+
+    public function getListCashiersInfo()
+    {
+        // foreach ($this->getAllWithJoin())
+    }
 }
