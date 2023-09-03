@@ -59,6 +59,12 @@ abstract class Repository
             : $this->modelClass::fromArray($data);
     }
 
+    /**
+     * @param string $columnName
+     * @param mixed $columnValue
+     * @param array $columns
+     * @return array|mixed|false|Collection<string, Model>
+     */
     public function getByColumn(string $columnName, $columnValue, array $columns = [])
     {
         $columnList = empty($columns) ? '*' : implode(', ', $columns);
@@ -68,6 +74,11 @@ abstract class Repository
         return $this->returnMultiples($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
+    /**
+     * @param int $id
+     * @param array $columns
+     * @return array|mixed|false|Model
+     */
     public function getById(int $id, array $columns = [])
     {
         $columnList = empty($columns) ? '*' : implode(', ', $columns);
@@ -77,6 +88,10 @@ abstract class Repository
         return $this->returnSimple($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
+    /**
+     * @param array $columns
+     * @return array|mixed|false|Collection<string, Model>
+     */
     public function getAllById(array $columns = [])
     {
         $columnList = empty($columns) ? '*' : implode(', ', $columns);
@@ -85,6 +100,11 @@ abstract class Repository
         return $this->returnMultiples($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
+    /**
+     * @param string $columnName
+     * @param array $columns
+     * @return array|mixed|false|Collection<string, Model>
+     */
     public function getAllByColumn(string $columnName, array $columns = [])
     {
         $columnList = empty($columns) ? '*' : implode(', ', $columns);
