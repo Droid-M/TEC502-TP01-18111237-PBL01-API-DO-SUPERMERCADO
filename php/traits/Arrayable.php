@@ -7,6 +7,21 @@ use ReflectionProperty;
 
 trait Arrayable
 {
+    private function convertToArray($items)
+    {
+        $result = [];
+        foreach ($items as $key => $item) {
+            if (is_object($item) && method_exists($item, 'toArray')) {
+                $result[$key] = $this->convertToArray($item->toArray());
+            } elseif (is_array($item)) {
+                $result[$key] = $this->convertToArray($item);
+            } else {
+                $result[$key] = $item;
+            }
+        }
+        return $result;
+    }
+
     public function toArray()
     {
         $properties = [];
@@ -15,6 +30,6 @@ trait Arrayable
             $propertyName = $property->getName();
             $properties[$propertyName] = $this->$propertyName;
         }
-        return $properties;
+        return $this->convertToArray($properties);
     }
 }

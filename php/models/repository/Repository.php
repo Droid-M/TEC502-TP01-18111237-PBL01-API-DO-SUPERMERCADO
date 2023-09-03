@@ -12,12 +12,12 @@ abstract class Repository
     protected PDO $db;
     protected string $tableName;
     protected string $modelClass;
-    private bool $returnAsArray;
+    private bool $forceArrayReturn;
 
     public function __construct(PDO|null $db = null)
     {
         $this->db = $db ?: Database::getPDO();
-        $this->returnAsArray = false;
+        $this->forceArrayReturn = false;
     }
 
     /**
@@ -27,9 +27,9 @@ abstract class Repository
      * @param $decision
      * @return static
      */
-    public function returnAsArray(bool $decision = true)
+    public function forceArrayReturn(bool $decision = true)
     {
-        $this->returnAsArray = $decision;
+        $this->forceArrayReturn = $decision;
         return $this;
     }
 
@@ -37,24 +37,27 @@ abstract class Repository
      * @param mixed $data
      * @return array|mixed|false|Collection<string, Model>
      */
-    private function returnMultiples(mixed $data)
+    protected function choseManyReturn(mixed $data)
     {
-        if (!is_array($data))
+        if (is_array($data))
             return $data;
-        return $this->returnAsArray
-            ? $data
-            : new Collection(array_map(fn ($v) => $this->modelClass::fromArray($v), $data));
+        if ($this->forceArrayReturn) {
+            if (is_object($data) && method_exists($data, 'toArray'))
+                return $data->toArray();
+            return (array) $data;
+        }
+        return $data;
     }
 
     /**
      * @param mixed $data
      * @return array|mixed|false|Model
      */
-    private function returnSimple(mixed $data)
+    protected function choseOneReturn(mixed $data)
     {
         if (!is_array($data))
             return $data;
-        return $this->returnAsArray
+        return $this->forceArrayReturn
             ? $data
             : $this->modelClass::fromArray($data);
     }
@@ -71,7 +74,7 @@ abstract class Repository
         $stmt = $this->db->prepare("SELECT $columnList FROM $this->tableName WHERE $columnName = :columnValue");
         $stmt->bindParam(':columnValue', $columnValue, PDO::PARAM_STR);
         $stmt->execute();
-        return $this->returnMultiples($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $this->choseManyReturn($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /**
@@ -85,7 +88,7 @@ abstract class Repository
         $stmt = $this->db->prepare("SELECT $columnList FROM $this->tableName WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        return $this->returnSimple($stmt->fetch(PDO::FETCH_ASSOC));
+        return $this->choseOneReturn($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
     /**
@@ -97,7 +100,7 @@ abstract class Repository
         $columnList = empty($columns) ? '*' : implode(', ', $columns);
         $stmt = $this->db->prepare("SELECT $columnList FROM $this->tableName");
         $stmt->execute();
-        return $this->returnMultiples($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $this->choseManyReturn($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /**
@@ -111,7 +114,7 @@ abstract class Repository
         $stmt = $this->db->prepare("SELECT $columnList FROM $this->tableName WHERE $columnName = :columnValue");
         $stmt->bindParam(':columnValue', $columnValue, PDO::PARAM_STR);
         $stmt->execute();
-        return $this->returnMultiples($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $this->choseManyReturn($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     public function save(array $data): bool
@@ -147,7 +150,7 @@ abstract class Repository
      * @param array $columns
      * @return string
      */
-    private function prefixColumns(string $table, array $columns)
+    protected function prefixColumns(string $table, array $columns)
     {
         $separator = DATABASE_TABLE_COLUMN_SEPARATOR;
         return empty($columns) ?
