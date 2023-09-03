@@ -118,17 +118,13 @@ abstract class Repository
     {
         $columns = implode(', ', array_keys($data));
         $placeholders = ':' . implode(', :', array_keys($data));
-
         $query = "INSERT INTO $this->tableName ($columns) VALUES ($placeholders)";
         $stmt = $this->db->prepare($query);
-
         foreach ($data as $column => $value) {
             $stmt->bindParam(':' . $column, $value);
         }
-
         return $stmt->execute();
     }
-
 
     public function deleteById(int $id): bool
     {
@@ -143,5 +139,39 @@ abstract class Repository
         $stmt = $this->db->prepare("DELETE FROM $this->tableName WHERE $columnName = :columnValue");
         $stmt->bindParam(':columnValue', $columnValue);
         return $stmt->execute();
+    }
+
+    public function getAllManyToMany(
+        string $relatedTable,
+        string $joinTable,
+        string|null $joinCondition1 = null,
+        string|null $joinCondition2 = null,
+        int|null $parentId = null,
+        array $columns = []
+    ): array {
+        $selectedColumns = [];
+
+        foreach ($columns as $column) {
+            // Prefixar as colunas com o nome da tabela
+            $selectedColumns[] = "$relatedTable.$column as {$relatedTable}_$column";
+        }
+
+        $selectedColumns = empty($selectedColumns) ? '*' : implode(', ', $selectedColumns);
+
+        $joinCondition1 = $joinCondition1 ?: "$this->tableName.id = $joinTable.{$this->tableName}_id";
+        $joinCondition2 = $joinCondition2 ?: "$relatedTable.id = $joinTable.{$relatedTable}_id";
+        $filterParentCondition = is_null($parentId) ? '' : "WHERE $this->tableName.id = :parentId";
+
+        $query = "SELECT $selectedColumns FROM $this->tableName
+                  JOIN $joinTable ON $joinCondition1
+                  JOIN $relatedTable ON $joinCondition2
+                  $filterParentCondition";
+
+        $stmt = $this->db->prepare($query);
+        if (!is_null($parentId))
+            $stmt->bindParam(':parentId', $parentId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
