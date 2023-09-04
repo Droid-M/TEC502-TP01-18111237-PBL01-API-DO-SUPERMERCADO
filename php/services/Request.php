@@ -11,12 +11,16 @@ class Request
 {
     public static function getClientIp()
     {
-        $clientIP = $_SERVER['REMOTE_ADDR'];
-        if (filter_var($clientIP, FILTER_VALIDATE_IP)) {
-            return $clientIP;
+        if (!app_in_localhost())
+            return $_SERVER['REMOTE_ADDR'];
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
-            return null; // Invalid IP
+            $ip = $_SERVER['REMOTE_ADDR'];
         }
+        return $ip;
     }
 
     public static function getRequestData()

@@ -13,6 +13,11 @@ class Collection implements ArrayAccess
         $this->items = $items;
     }
 
+    public function first()
+    {
+        return array_first_value($this->items);
+    }
+
     public function all()
     {
         return $this->items;

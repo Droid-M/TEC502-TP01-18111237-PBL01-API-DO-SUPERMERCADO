@@ -55,3 +55,11 @@ function array_except(array $inputArray, array $keysToExclude)
     }
     return $inputArray;
 }
+
+function array_first_value(array $array, mixed $default = null)
+{
+    $key = array_key_first($array);
+    return is_null($key)
+        ? $default
+        : $array[$key] ?? $default;
+}

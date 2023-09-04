@@ -5,7 +5,7 @@ namespace php\middlewares;
 use php\services\Request;
 use php\services\Response;
 
-class IsCashier extends Middleware
+class IsCashierMiddleware extends Middleware
 {
     public function run()
     {

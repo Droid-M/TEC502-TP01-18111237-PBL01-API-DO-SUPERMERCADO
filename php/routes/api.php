@@ -2,21 +2,22 @@
 
 use php\controllers\CashierController;
 use php\middlewares\IsAdminMiddleware;
-use php\middlewares\IsCashier;
+use php\middlewares\IsUnregisteredCashierMiddleware;
+use php\middlewares\IsCashierMiddleware;
 use php\services\Route;
 
 /* ----------------------------- Cashier Routes ----------------------------- */
-// Route::register("api/cashiers/{id}", CashierController::class, "index")->get();
-// Route::register("api/cashiers/{id}", CashierController::class, "index")->post();
+
 Route::register("api/cashiers/register", CashierController::class, "register")
-    ->middleware(IsCashier::class)
+    ->middleware(IsCashierMiddleware::class, IsUnregisteredCashierMiddleware::class)
     ->post();
-// Route::register("api/cashiers/{id}/free", CashierController::class, "index")->post();
-// Route::register("api/cashiers/{id}/block", CashierController::class, "index")->post();
 
 
 /* ------------------------- Admin Routes ------------------------- */
 
+Route::register("api/cashiers/{id}/manage", CashierController::class, "manage")
+    ->middleware(IsAdminMiddleware::class)
+    ->post();
 Route::register("api/cashiers", CashierController::class, "list")
     ->middleware(IsAdminMiddleware::class)
     ->get();

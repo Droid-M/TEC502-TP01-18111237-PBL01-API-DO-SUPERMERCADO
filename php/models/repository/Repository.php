@@ -124,7 +124,7 @@ abstract class Repository
         $query = "INSERT INTO $this->tableName ($columns) VALUES ($placeholders)";
         $stmt = $this->db->prepare($query);
         foreach ($data as $column => $value) {
-            $stmt->bindParam(':' . $column, $value);
+            $stmt->bindValue(':' . $column, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
         }
         return $stmt->execute();
     }

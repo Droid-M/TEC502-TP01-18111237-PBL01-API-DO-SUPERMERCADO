@@ -16,3 +16,8 @@ function env(string $key)
         dd("O arquivo $envFilePath não foi encontrado.");
     }
 }
+
+function app_in_localhost()
+{
+    return strtolower(env("ENV")) == "localhost";
+}

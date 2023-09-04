@@ -73,9 +73,11 @@ function dump(mixed $data)
     echo pseud_dump($data) . "<br>\n";
 }
 
-function dd(mixed $data)
+function dd(...$data)
 {
     header("HTTP/1.0 500");
-    echo pseud_dump($data) . "<br>\n";
+    foreach ($data as $d) {
+        echo pseud_dump($data) . "<br>\n";
+    }
     exit;
 }

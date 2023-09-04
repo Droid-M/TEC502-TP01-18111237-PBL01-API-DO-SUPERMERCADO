@@ -206,12 +206,12 @@ class RouteRegister
     }
 
     /**
-     * @param Middleware[]|string[]|Middleware|string $middleware
+     * @param Middleware|string $middlewares
      * @return static
      */
-    public function middleware(Middleware|string|array $middleware)
+    public function middleware(...$middlewares)
     {
-        $this->middlewares = array_merge($this->middlewares, (array) $middleware);
+        $this->middlewares = array_merge($this->middlewares, (array) $middlewares);
         return $this;
     }
 }

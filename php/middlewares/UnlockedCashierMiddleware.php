@@ -6,7 +6,7 @@ use php\services\CashierService;
 use php\services\Request;
 use php\services\Response;
 
-class IsCashier extends Middleware
+class UnlockedCashierMiddleware extends Middleware
 {
     public function run()
     {

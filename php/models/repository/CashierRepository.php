@@ -48,7 +48,7 @@ class CashierRepository extends Repository
 
     public function getCashierInfoByColumn(string $columnsName, string $columnValue)
     {
-        return $this->fetchCashiersInfo("WHERE cashiers.$columnsName = :$columnsName", [':$columnsName' => $columnValue]);
+        return $this->fetchCashiersInfo("WHERE cashiers.$columnsName = :$columnsName", [":$columnsName" => $columnValue])->first();
     }
 
     public function listCashiersInfo()
