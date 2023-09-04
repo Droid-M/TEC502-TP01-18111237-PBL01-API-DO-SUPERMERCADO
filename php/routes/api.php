@@ -9,7 +9,7 @@ use php\services\Route;
 /* ----------------------------- Cashier Routes ----------------------------- */
 
 Route::register("api/cashiers/register", CashierController::class, "register")
-    ->middleware(IsCashierMiddleware::class, IsUnregisteredCashierMiddleware::class)
+    ->middleware(IsUnregisteredCashierMiddleware::class)
     ->post();
 
 
