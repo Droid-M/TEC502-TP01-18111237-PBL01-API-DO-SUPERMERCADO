@@ -33,7 +33,7 @@ class PurchaseRepository extends Repository
         return $purchases;
     }
 
-    public function registerNew(int $originCashier, float $totalValue, array $productsId, string $status = 'started')
+    public function registerNew(int $originCashier, float $totalValue, string $status = 'started')
     {
         $hasSaved = $this->save([
             'origin_cashier' => $originCashier,

@@ -60,11 +60,13 @@ trait Seedable
             for ($i = 1; $i <= 100; $i++) {
                 $name = "Product " . $i;
                 $stock_quantity = rand(0, 100);
+                $price = rand(7, 2100);
                 $bar_code = "BAR" . str_pad($i, 5, "0", STR_PAD_LEFT);
 
-                $sql = "INSERT INTO products (name, stock_quantity, bar_code) VALUES (:name, :stock_quantity, :bar_code)";
+                $sql = "INSERT INTO products (name, stock_quantity, bar_code, price) VALUES (:name, :stock_quantity, :bar_code, :price)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindParam(':name', $name);
+                $stmt->bindParam(':price', $price);
                 $stmt->bindParam(':stock_quantity', $stock_quantity);
                 $stmt->bindParam(':bar_code', $bar_code);
                 $stmt->execute();
