@@ -53,7 +53,7 @@ class CashierController
         return json(
             200,
             'Status retornado com sucesso!',
-            ['is_blocked' => CashierService::checkIfIsBlockedByIp(Request::getClientIp())]
+            ['is_blocked' => (bool) CashierService::checkIfIsBlockedByIp(Request::getClientIp())]
         );
     }
 }

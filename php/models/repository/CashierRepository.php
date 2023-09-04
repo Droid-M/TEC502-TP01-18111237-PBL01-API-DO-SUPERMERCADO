@@ -34,12 +34,18 @@ class CashierRepository extends Repository
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $dbLine) {
             $cashierData = $this->removeColumnsPrefix($this->tableName, $dbLine);
             $cashier = $cashiers[$cashierData["id"]] ?? Cashier::fromArray($cashierData);
-            $productData = $this->removeColumnsPrefix("products", $dbLine);
             $purchaseData = $this->removeColumnsPrefix('purchases', $dbLine);
-            $purchase = $cashier->registered_purchases[$purchaseData['id']] ?? Purchase::fromArray($purchaseData);
-            $product = $purchase->products[$productData['id']] ?? Product::fromArray($productData);
-            $purchase->products->put($product->id, $product);
-            $cashier->registered_purchases->put($purchase->id, $purchase);
+            $purchaseIdExists = array_key_exists('id', $purchaseData);
+            if (!$purchaseIdExists || ($purchaseIdExists && !is_null($purchaseData['id']))) {
+                $purchase = $cashier->registered_purchases[$purchaseData['id']] ?? Purchase::fromArray($purchaseData);
+                $productData = $this->removeColumnsPrefix("products", $dbLine);
+                $productIdExists = array_key_exists('id', $productData);
+                if (!$productIdExists || ($productIdExists && $productData['id'] != null)) {
+                    $product = $purchase->products[$productData['id']] ?? Product::fromArray($productData);
+                    $purchase->products->put($product->id, $product);
+                }
+                $cashier->registered_purchases->put($purchase->id, $purchase);
+            }
             $cashiers->put($cashier->id, $cashier);
         }
         // return $this->choseManyReturn($cashiers)

@@ -74,7 +74,7 @@ abstract class Repository
         $stmt = $this->db->prepare("SELECT $columnList FROM $this->tableName WHERE $columnName = :columnValue");
         $stmt->bindParam(':columnValue', $columnValue, PDO::PARAM_STR);
         $stmt->execute();
-        return $this->choseManyReturn($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     /**

@@ -32,5 +32,23 @@ class CashierService
         return (new CashierRepository())->updateStatus($id, $block);
     }
 
-    public function 
+    public static function checkIfIsBlockedById(int $cashierId)
+    {
+        return (new CashierRepository())->getById($cashierId, ['is_blocked'])['is_blocked'];
+    }
+
+    public static function checkIfIsBlockedByIp(string $cashierIp)
+    {
+        return array_get((new CashierRepository())->getByColumn('ip', $cashierIp, ['is_blocked']), 'is_blocked');
+    }
+
+    public static function idExists(string $id)
+    {
+        return null != (new CashierRepository())->getByColumn('id', $id, ['id']);
+    }
+
+    public static function ipExists(string $ip)
+    {
+        return null != (new CashierRepository())->getByColumn('ip', $ip, ['id']);
+    }
 }

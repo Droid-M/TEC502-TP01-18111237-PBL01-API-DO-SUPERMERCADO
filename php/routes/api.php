@@ -11,6 +11,9 @@ use php\services\Route;
 Route::register("api/cashiers/register", CashierController::class, "register")
     ->middleware(IsUnregisteredCashierMiddleware::class)
     ->post();
+Route::register("api/cashiers/me/blocking-status", CashierController::class, "checkBlockStatus")
+    ->middleware(IsCashierMiddleware::class)
+    ->get();
 
 
 /* ------------------------- Admin Routes ------------------------- */
