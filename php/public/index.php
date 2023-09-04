@@ -23,5 +23,9 @@ use php\services\Route;
 
 Database::init();
 Route::treatRequestEndpoint();
-$response = Response::processRequest();
-Response::renderResponse($response);
+try {
+    $response = Response::processRequest();
+    Response::renderResponse($response);
+} catch (Exception|TypeError $e) {
+    abort(500, $e->getMessage());
+}

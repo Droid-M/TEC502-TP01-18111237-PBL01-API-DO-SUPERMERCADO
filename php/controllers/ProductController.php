@@ -6,7 +6,9 @@ use Exception;
 use php\services\Database;
 use php\services\ProductService;
 use php\services\Request;
+use php\validators\RegisterProductsRequestValidator;
 use php\validators\RegisterPurchaseRequestValidator;
+use TypeError;
 
 class ProductController
 {
@@ -21,12 +23,32 @@ class ProductController
 
     public function edit()
     {
-        return Database::transaction(function () {
-            return json(
-                200, 
-                'Produto atualizado com sucesso!',
-                ProductService::edit(Request::getPathParameters('id'), Request::getInputParameters())->toArray(0)
-            );
-        });
+        try {
+            return Database::transaction(function () {
+                return json(
+                    200, 
+                    'Produto atualizado com sucesso!',
+                    ProductService::edit(Request::getPathParameters('id'), Request::getInputParameters())->toArray(0)
+                );
+            });
+        } catch (Exception|TypeError $e) {
+            return json(500, $e->getMessage());
+        }
+    }
+    
+    public function registerProducts()
+    {
+        RegisterProductsRequestValidator::validate();
+        try {
+            return Database::transaction(function () {
+                return json(
+                    200, 
+                    'Produto atualizado com sucesso!',
+                    ['products' => ProductService::registerProducts(Request::getInputParameters('products'))->toArray(0)]
+                );
+            });
+        } catch (Exception|TypeError $e) {
+            return json(500, $e->getMessage());
+        }
     }
 }

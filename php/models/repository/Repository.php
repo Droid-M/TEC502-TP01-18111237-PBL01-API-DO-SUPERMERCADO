@@ -88,7 +88,8 @@ abstract class Repository
         $stmt = $this->db->prepare("SELECT $columnList FROM $this->tableName WHERE id = :id");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        return $this->choseOneReturn($stmt->fetch(PDO::FETCH_ASSOC));
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+        // return $this->choseOneReturn($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
     /**

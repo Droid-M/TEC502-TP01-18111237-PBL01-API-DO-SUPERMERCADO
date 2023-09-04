@@ -64,19 +64,19 @@ class Request
     public static function getPathParameters(string|null $key = null): array|null|string
     {
         global $request102392039s2k20202;
-        return is_null($key) ? $request102392039s2k20202["path_parameters"] : array_get($request102392039s2k20202["path_parameters"], $key);
+        return is_null($key) ? $request102392039s2k20202["path_parameters"] : array_get((array) $request102392039s2k20202["path_parameters"], $key);
     }
 
     public static function getInputParameters(string|null $key = null): array|null|string
     {
         global $request102392039s2k20202;
-        return is_null($key) ? $request102392039s2k20202["input_parameters"] : array_get($request102392039s2k20202["input_parameters"], $key);
+        return is_null($key) ? $request102392039s2k20202["input_parameters"] : array_get((array) $request102392039s2k20202["input_parameters"], $key);
     }
 
     public static function getQueryParameters(string|null $key = null): array|null|string
     {
         global $request102392039s2k20202;
-        return is_null($key) ? $request102392039s2k20202["query_parameters"] : array_get($request102392039s2k20202["query_parameters"], $key);
+        return is_null($key) ? $request102392039s2k20202["query_parameters"] : array_get((array) $request102392039s2k20202["query_parameters"], $key);
     }
 
     public static function getHeaders(string|null $key = null): array|null|string

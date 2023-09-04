@@ -38,6 +38,11 @@ class Collection implements ArrayAccess
         $this->items[$key] = $value;
     }
 
+    public function add($value)
+    {
+        $this->items[] = $value;
+    }
+
     public function forget($key)
     {
         if ($this->has($key)) {

@@ -13,7 +13,7 @@ class ProductRepository extends Repository
     public function getByBarCode(string $barCode)
     {
         $dbLine = $this->getByColumn('bar_code', $barCode);
-        if ($dbLine) 
+        if ($dbLine)
             return Product::fromArray($dbLine);
         return null;
     }
@@ -31,8 +31,19 @@ class ProductRepository extends Repository
     {
         $data['id'] = $id;
         return $this->update($data, 'products.id = :id')
+            ? Product::fromArray($this->getById($id))
+            : null;
+    }
+
+    public function addProduct(string $name, int $stockQty, float $price, string $barCode)
+    {
+        return $this->save([
+            'name' => $name,
+            'price' => $price,
+            'stock_quantity' => $stockQty,
+            'bar_code' => $barCode
+        ], 'products.id = :id')
             ? Product::fromArray($this->getById($this->db->lastInsertId()))
             : null;
     }
-        
 }

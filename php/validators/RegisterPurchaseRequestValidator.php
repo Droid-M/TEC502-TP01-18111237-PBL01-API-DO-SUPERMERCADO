@@ -13,8 +13,8 @@ class RegisterPurchaseRequestValidator extends RequestValidator
         $unavailableProducts = [];
         if (is_null($productsBarCode = Request::getInputParameters('products_bar_code')))
             return abort(422, 'Dados inválidos!', ['products_bar_code' => 'Valor é necessário!']);
-        if (!is_array($productsBarCode))
-            return abort(422, 'Dados inválidos!', ['products_bar_code' => 'Deve ser um array']);
+        if (!is_array($productsBarCode) || empty($productsBarCode))
+            return abort(422, 'Dados inválidos!', ['products_bar_code' => 'Deve ser um array com códigos de barras']);
         foreach ($productsBarCode as $index => $barCode) {
             $product = ProductService::getByBarCode($barCode);
             if (null == $product)

@@ -19,6 +19,9 @@ Route::register("api/cashiers/me/blocking-status", CashierController::class, "ch
 Route::register("api/purchases/register", PurchaseController::class, "register")
     ->middleware(IsCashierMiddleware::class)
     ->post();
+Route::register("api/purchases/{id}/pay", PurchaseController::class, "pay")
+    ->middleware(IsCashierMiddleware::class)
+    ->post();
 
 
 /* ------------------------- Admin Routes ------------------------- */
@@ -32,6 +35,9 @@ Route::register("api/cashiers", CashierController::class, "list")
 Route::register('api/products', ProductController::class, 'list')
     ->middleware(IsAdminMiddleware::class)
     ->get();
+Route::register('api/products/new', ProductController::class, 'registerProducts')
+    ->middleware(IsAdminMiddleware::class)
+    ->post();
 Route::register('api/products/{id}/edit', ProductController::class, 'edit')
     ->middleware(IsAdminMiddleware::class)
     ->put();
