@@ -46,5 +46,5 @@ Route::register('api/products/{id}/edit', ProductController::class, 'edit')
     ->middleware(IsAdminMiddleware::class)
     ->put();
 Route::register("api/purchases/history", PurchaseController::class, "history")
-    ->middleware(IsCashierMiddleware::class)
-    ->post();
+    ->middleware(IsAdminMiddleware::class)
+    ->get();

@@ -67,6 +67,10 @@ class PurchaseController
 
     public function history()
     {
-        
+        return json(
+            200,
+            'Histórico de compras consulado com sucesso!',
+            PurchaseService::getPurchaseHistory(false)->toArray()
+        );
     }
 }

@@ -11,11 +11,11 @@ class PurchaseRepository extends Repository
     protected string $tableName = 'purchases';
     protected string $modelClass = Purchase::class;
 
-    public function getPurchasesWithProducts()
+    public function getPurchasesWithProducts(bool $orderAsc = true)
     {
         /** @var Collection<string, Purchase> $purchases */
         $purchases = new Collection();
-        foreach ($this->getAllManyToManyWithCondition(
+        foreach ($this->getAllManyToManySortedWithCondition(
             'products',
             'purchase_product',
             'purchases.id = purchase_product.purchase_id',
@@ -23,11 +23,18 @@ class PurchaseRepository extends Repository
             '',
             [],
             Purchase::COLUMNS,
-            Product::COLUMNS
+            Product::COLUMNS,
+            'purchases.id',
+            $orderAsc ? 'ASC' : 'DESC'
         ) as $dbLine) {
             $purchase = Purchase::fromArray($this->removeColumnsPrefix('purchases', $dbLine));
             $purchase = $purchases[$purchase->id] ?? $purchase;
-            $product = Product::fromArray($this->removeColumnsPrefix('products', $dbLine));
+            $productData = $this->removeColumnsPrefix("products", $dbLine);
+            $productIdExists = array_key_exists('id', $productData);
+            if (!$productIdExists || ($productIdExists && $productData['id'] != null)) {
+                $product = $purchase->products[$productData['id']] ?? Product::fromArray($productData);
+                $purchase->products->put($product->id, $product);
+            }
             $purchase->products->put($product->id, $product);
             $purchases->put($purchase->id, $purchase);
         }

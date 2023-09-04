@@ -290,4 +290,43 @@ abstract class Repository
         }
         return $stmt->execute();
     }
+
+    public function getAllManyToManySortedWithCondition(
+        string $relatedTable,
+        string $joinTable,
+        string $joinCondition1,
+        string $joinCondition2,
+        string $condition = '',
+        array $conditionValues = [],
+        array $parentColumns = [],
+        array $relatedColumns = [],
+        string $orderByColumn = '',
+        string $orderByDirection = 'ASC'
+    ): array {
+        $parentColumns = $this->prefixColumns($this->tableName, $parentColumns);
+        $relatedColumns = $this->prefixColumns($relatedTable, $relatedColumns);
+    
+        $query = "SELECT $parentColumns, $relatedColumns FROM $this->tableName
+                  JOIN $joinTable ON $joinCondition1
+                  JOIN $relatedTable ON $joinCondition2";
+    
+        if (!empty($condition)) {
+            $query .= " WHERE $condition";
+        }
+    
+        if (!empty($orderByColumn)) {
+            $query .= " ORDER BY $orderByColumn $orderByDirection";
+        }
+    
+        $stmt = $this->db->prepare($query);
+    
+        foreach ($conditionValues as $paramName => $paramValue) {
+            $paramType = is_int($paramValue) ? PDO::PARAM_INT : PDO::PARAM_STR;
+            $stmt->bindParam($paramName, $paramValue, $paramType);
+        }
+
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

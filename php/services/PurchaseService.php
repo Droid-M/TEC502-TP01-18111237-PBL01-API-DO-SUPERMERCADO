@@ -56,4 +56,9 @@ class PurchaseService
             'status' => 'canceled',
         ]);
     }
+
+    public static function getPurchaseHistory(bool $orderAsc = false)
+    {
+        return (new PurchaseRepository())->getPurchasesWithProducts($orderAsc);
+    }
 }
