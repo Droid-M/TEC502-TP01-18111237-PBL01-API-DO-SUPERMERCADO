@@ -14,9 +14,9 @@ class RegisterPurchaseRequestValidator extends RequestValidator
         foreach (Request::getInputParameters('products_bar_code') as $index => $barCode) {
             $product = ProductService::getByBarCode($barCode);
             if (null == $product)
-                $unavailableProducts[$barCode] = 'Produto não registrado!';
+                $unavailableProducts[(string) $index] = 'Produto não registrado!';
             else if ($product->stock_quantity <= 0)
-                $unavailableProducts[$barCode] = 'Quantidade em estoque é insuficiente!';
+                $unavailableProducts[(string) $index] = 'Quantidade em estoque é insuficiente!';
         }
         if (count($unavailableProducts) > 0)
             abort(422, 'Dados inválidos!', ['products_bar_code' => $unavailableProducts]);

@@ -23,10 +23,9 @@ class Response
             default => ""
         };
         header("HTTP/1.0 $status $headerMessage");
-        return static::encodeResponseContent([
-            'message' => $message,
-            'data' => $content
-        ]);
+        return $status >= 400 && $status <= 600
+            ? static::encodeResponseContent(['message' => $message, 'errors' => $content])
+            : static::encodeResponseContent(['message' => $message, 'data' => $content]);
     }
 
     public static function abort(string $status, null|string $message = null, array $content = [], string $headerMessage = null)
