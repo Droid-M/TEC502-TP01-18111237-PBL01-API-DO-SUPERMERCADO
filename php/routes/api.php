@@ -17,7 +17,7 @@ Route::register("api/cashiers/register", CashierController::class, "register")
 
 Route::register("api/cashiers/{id}/manage", CashierController::class, "manage")
     ->middleware(IsAdminMiddleware::class)
-    ->post();
+    ->put();
 Route::register("api/cashiers", CashierController::class, "list")
     ->middleware(IsAdminMiddleware::class)
     ->get();

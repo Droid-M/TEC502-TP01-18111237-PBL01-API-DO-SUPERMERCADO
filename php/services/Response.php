@@ -59,7 +59,7 @@ class Response
      */
     public static function processRequest()
     {
-        $parameters = Request::getPathParameters();
+        $parameters = array_values(Request::getPathParameters());
         if (!Request::usesCallback()) {
             $controller = Request::getControllerPath();
             $method = Request::getControllerMethod();

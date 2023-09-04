@@ -38,7 +38,7 @@ class Request
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $request102392039s2k20202["input_parameters"] = $_POST;
         } else {
-            $newRequest["input_parameters"] = json_decode(file_get_contents("php://input"), 1);
+            $request102392039s2k20202["input_parameters"] = json_decode(file_get_contents("php://input"), 1);
         }
         $request102392039s2k20202["headers"] = $_SERVER;
     }

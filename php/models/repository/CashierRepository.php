@@ -55,4 +55,9 @@ class CashierRepository extends Repository
     {
         return $this->fetchCashiersInfo();
     }
+
+    public function updateStatus(int $id, bool $block)
+    {
+        return $this->update(['is_blocked' => $block], "cashiers.id = $id");
+    }
 }

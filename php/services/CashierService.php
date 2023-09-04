@@ -26,4 +26,11 @@ class CashierService
     {
         return (new CashierRepository())->save(['ip' => $ip, 'is_blocked' => $isBlocked]);
     }
+
+    public static function blockOrRelease(string $id, bool $block)
+    {
+        return (new CashierRepository())->updateStatus($id, $block);
+    }
+
+    public function 
 }

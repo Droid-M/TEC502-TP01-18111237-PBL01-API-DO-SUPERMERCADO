@@ -269,4 +269,24 @@ abstract class Repository
         }
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function update(array $data, $whereClause): bool
+    {
+        if (empty($data) || empty($whereClause)) {
+            return false;
+        }
+        $setClause = [];
+        foreach ($data as $column => $value) {
+            $setClause[] = "$column = :" . $column;
+        }
+        $setClause = implode(', ', $setClause);
+
+        $query = "UPDATE $this->tableName SET $setClause WHERE $whereClause";
+        $stmt = $this->db->prepare($query);
+
+        foreach ($data as $column => $value) {
+            $stmt->bindValue(':' . $column, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+        }
+        return $stmt->execute();
+    }
 }

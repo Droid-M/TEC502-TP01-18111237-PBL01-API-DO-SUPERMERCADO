@@ -77,7 +77,7 @@ function dd(...$data)
 {
     header("HTTP/1.0 500");
     foreach ($data as $d) {
-        echo pseud_dump($data) . "<br>\n";
+        echo pseud_dump($d) . "<br>\n";
     }
     exit;
 }

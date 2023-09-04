@@ -37,7 +37,7 @@ class Route
             return null;
         for ($i = 0; $i < $uriSize; $i++) {
             if (preg_match('/^[a-zA-Z0-9]*\{[a-zA-Z0-9]*\}$/', $definedUri[$i]))
-                $parameters[] = $requestUri[$i];
+                $parameters[trim($definedUri[$i], '{}')] = $requestUri[$i];
         }
         return $parameters;
     }
