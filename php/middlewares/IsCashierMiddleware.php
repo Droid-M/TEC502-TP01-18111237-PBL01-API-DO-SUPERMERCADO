@@ -4,7 +4,6 @@ namespace php\middlewares;
 
 use php\services\CashierService;
 use php\services\Request;
-use php\services\Response;
 
 class IsCashierMiddleware extends Middleware
 {

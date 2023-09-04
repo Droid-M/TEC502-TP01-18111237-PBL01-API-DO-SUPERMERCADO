@@ -63,6 +63,10 @@ class PurchaseController
                 PurchaseService::cancelPurchase(Request::getPathParameters('id'))->toArray()
             );
         });
+    }
+
+    public function history()
+    {
         
     }
 }

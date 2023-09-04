@@ -6,6 +6,7 @@ use php\controllers\PurchaseController;
 use php\middlewares\IsAdminMiddleware;
 use php\middlewares\IsUnregisteredCashierMiddleware;
 use php\middlewares\IsCashierMiddleware;
+use php\middlewares\IsUnlockedCashierMiddleware;
 use php\services\Route;
 
 /* ----------------------------- Cashier Routes ----------------------------- */
@@ -17,7 +18,7 @@ Route::register("api/cashiers/me/blocking-status", CashierController::class, "ch
     ->middleware(IsCashierMiddleware::class)
     ->get();
 Route::register("api/purchases/register", PurchaseController::class, "register")
-    ->middleware(IsCashierMiddleware::class)
+    ->middleware(IsCashierMiddleware::class, IsUnlockedCashierMiddleware::class)
     ->post();
 Route::register("api/purchases/{id}/pay", PurchaseController::class, "pay")
     ->middleware(IsCashierMiddleware::class)
@@ -44,3 +45,6 @@ Route::register('api/products/new', ProductController::class, 'registerProducts'
 Route::register('api/products/{id}/edit', ProductController::class, 'edit')
     ->middleware(IsAdminMiddleware::class)
     ->put();
+Route::register("api/purchases/history", PurchaseController::class, "history")
+    ->middleware(IsCashierMiddleware::class)
+    ->post();

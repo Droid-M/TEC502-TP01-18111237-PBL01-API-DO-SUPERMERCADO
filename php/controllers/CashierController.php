@@ -20,6 +20,7 @@ class CashierController
     public function register()
     {
         try {
+            CashierService::register(Request::getClientIp());
             return Database::transaction(function () {
                 return json(201, "Caixa registrado com sucesso!", CashierService::getCashierByIp(Request::getClientIp())->toArray());
             });
