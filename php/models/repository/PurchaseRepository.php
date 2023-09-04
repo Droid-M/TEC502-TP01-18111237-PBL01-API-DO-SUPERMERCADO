@@ -15,22 +15,43 @@ class PurchaseRepository extends Repository
     {
         /** @var Collection<string, Purchase> $purchases */
         $purchases = new Collection();
-        foreach ($this->getAllManyToManyById(
+        foreach ($this->getAllManyToManyWithCondition(
             'products',
             'purchase_product',
             'purchases.id = purchase_product.purchase_id',
             'products.id = purchase_product.product_id',
-            1,
+            '',
+            [],
             Purchase::COLUMNS,
             Product::COLUMNS
         ) as $dbLine) {
             $purchase = Purchase::fromArray($this->removeColumnsPrefix('purchases', $dbLine));
-            $purchase = $purchases[$purchase->id] ?? $purchase; 
+            $purchase = $purchases[$purchase->id] ?? $purchase;
             $product = Product::fromArray($this->removeColumnsPrefix('products', $dbLine));
             $purchase->products->put($product->id, $product);
             $purchases->put($purchase->id, $purchase);
         }
         return $purchases;
+    }
+
+    public function getPurchaseById(string $id)
+    {
+        $purchase = null;
+        foreach ($this->getAllManyToManyById(
+            'products',
+            'purchase_product',
+            'purchases.id = purchase_product.purchase_id',
+            'products.id = purchase_product.product_id',
+            $id,
+            Purchase::COLUMNS,
+            Product::COLUMNS
+        ) as $dbLine) {
+            if (is_null($purchase))
+                $purchase = Purchase::fromArray($this->removeColumnsPrefix('purchases', $dbLine));
+            $product = Product::fromArray($this->removeColumnsPrefix('products', $dbLine));
+            $purchase->products->put($product->id, $product);
+        }
+        return $purchase;
     }
 
     public function registerNew(int $originCashier, float $totalValue, string $status = 'started')
@@ -43,5 +64,13 @@ class PurchaseRepository extends Repository
         if ($hasSaved)
             return Purchase::fromArray($this->getById($this->db->lastInsertId()));
         return null;
+    }
+
+    public function updatePurchase(int $id, array $data)
+    {
+        $data['id'] = $id;
+        return $this->update($data, 'purchases.id = :id')
+            ? $this->getPurchaseById($id)
+            : null;
     }
 }

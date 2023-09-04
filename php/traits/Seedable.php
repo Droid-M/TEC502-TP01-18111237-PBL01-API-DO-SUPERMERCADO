@@ -14,7 +14,7 @@ trait Seedable
    
     private static function randomPurchaseStatus()
     {
-        $purchaseStatus = ['created', 'paid', 'canceled'];
+        $purchaseStatus = ['started', 'paid', 'canceled'];
         return $purchaseStatus[array_rand($purchaseStatus)];
     }
 

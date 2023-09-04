@@ -22,6 +22,9 @@ Route::register("api/purchases/register", PurchaseController::class, "register")
 Route::register("api/purchases/{id}/pay", PurchaseController::class, "pay")
     ->middleware(IsCashierMiddleware::class)
     ->post();
+Route::register("api/purchases/{id}/cancel", PurchaseController::class, "cancel")
+    ->middleware(IsCashierMiddleware::class)
+    ->post();
 
 
 /* ------------------------- Admin Routes ------------------------- */
