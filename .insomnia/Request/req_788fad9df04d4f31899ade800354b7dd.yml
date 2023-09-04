@@ -1,0 +1,38 @@
+_id: req_788fad9df04d4f31899ade800354b7dd
+type: Request
+parentId: fld_b4a5e145923a44e48d4358c9f24a6d24
+modified: 1693859981737
+created: 1693859940715
+url: "{{ _.api_url }}/products/28/edit"
+name: edita produtos
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"status": "block"
+    }
+parameters: []
+headers:
+  - id: pair_8406995a76154519a5d4a8aace18345c
+    name: Accept
+    value: application/json
+    description: ""
+    disabled: false
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: apikey
+  disabled: false
+  key: admin_token
+  value: admin123
+  addTo: header
+metaSortKey: -1690849676214.75
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

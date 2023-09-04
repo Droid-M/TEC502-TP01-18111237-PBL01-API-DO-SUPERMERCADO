@@ -1,0 +1,40 @@
+_id: req_522e5b46c9e84fa89886f7be84537831
+type: Request
+parentId: fld_4f160eaad0e14a6a940dba22dca420b9
+modified: 1693859970494
+created: 1693848972126
+url: "{{ _.base_url }}/api/purchases/register"
+name: registra compra
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"products_bar_code": [
+    		"222"
+    	]
+    }
+parameters: []
+headers:
+  - id: pair_f61af8b414694140b98a9785a5c668d2
+    name: CLIENT_IP
+    value: 192.168.160.2244
+    description: ""
+    disabled: false
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: apikey
+  disabled: false
+  key: CASHIER_TOKEN
+  value: cashier123
+  addTo: header
+metaSortKey: -1693794244666.7812
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

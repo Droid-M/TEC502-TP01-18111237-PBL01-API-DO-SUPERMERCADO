@@ -1,0 +1,38 @@
+_id: req_e811a5d5fa4f4b53a26e94fb3019b0dd
+type: Request
+parentId: fld_b4a5e145923a44e48d4358c9f24a6d24
+modified: 1693794237111
+created: 1693492147790
+url: "{{ _.api_url }}/cashiers"
+name: lista caixas conectados
+description: ""
+method: GET
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"ID": "123"
+    }
+parameters: []
+headers:
+  - id: pair_8406995a76154519a5d4a8aace18345c
+    name: Accept
+    value: application/json
+    description: ""
+    disabled: false
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: apikey
+  disabled: false
+  key: admin_token
+  value: admin123
+  addTo: header
+metaSortKey: -1691730482675.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

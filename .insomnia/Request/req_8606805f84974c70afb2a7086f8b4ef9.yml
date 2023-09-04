@@ -1,0 +1,35 @@
+_id: req_8606805f84974c70afb2a7086f8b4ef9
+type: Request
+parentId: fld_b4a5e145923a44e48d4358c9f24a6d24
+modified: 1693857323721
+created: 1693857311314
+url: "{{ _.api_url }}/products"
+name: lista produtos registrados
+description: ""
+method: GET
+body:
+  mimeType: application/json
+  text: ""
+parameters: []
+headers:
+  - id: pair_8406995a76154519a5d4a8aace18345c
+    name: Accept
+    value: application/json
+    description: ""
+    disabled: false
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: apikey
+  disabled: false
+  key: admin_token
+  value: admin123
+  addTo: header
+metaSortKey: -1691730482650.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

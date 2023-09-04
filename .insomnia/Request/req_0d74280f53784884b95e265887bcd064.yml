@@ -1,0 +1,31 @@
+_id: req_0d74280f53784884b95e265887bcd064
+type: Request
+parentId: fld_4f160eaad0e14a6a940dba22dca420b9
+modified: 1693859967283
+created: 1693772462468
+url: "{{ _.base_url }}/api/cashiers/register"
+name: registra caixa
+description: ""
+method: POST
+body: {}
+parameters: []
+headers:
+  - id: pair_f61af8b414694140b98a9785a5c668d2
+    name: CLIENT_IP
+    value: 192.168.160.2244
+    description: ""
+    disabled: false
+authentication:
+  type: apikey
+  disabled: false
+  key: CASHIER_TOKEN
+  value: cashier123
+  addTo: header
+metaSortKey: -1693794251318.625
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
