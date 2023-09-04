@@ -1,6 +1,6 @@
 <?php
 
-namespace phps\validators;
+namespace php\validators;
 
 use php\services\ProductService;
 use php\services\Request;
@@ -11,7 +11,11 @@ class RegisterPurchaseRequestValidator extends RequestValidator
     public static function validate()
     {
         $unavailableProducts = [];
-        foreach (Request::getInputParameters('products_bar_code') as $index => $barCode) {
+        if (is_null($productsBarCode = Request::getInputParameters('products_bar_code')))
+            return abort(422, 'Dados inválidos!', ['products_bar_code' => 'Valor é necessário!']);
+        if (!is_array($productsBarCode))
+            return abort(422, 'Dados inválidos!', ['products_bar_code' => 'Deve ser um array']);
+        foreach ($productsBarCode as $index => $barCode) {
             $product = ProductService::getByBarCode($barCode);
             if (null == $product)
                 $unavailableProducts[(string) $index] = 'Produto não registrado!';

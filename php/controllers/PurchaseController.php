@@ -6,7 +6,7 @@ use Exception;
 use php\services\Database;
 use php\services\PurchaseService;
 use php\services\Request;
-use phps\validators\RegisterPurchaseRequestValidator;
+use php\validators\RegisterPurchaseRequestValidator;
 
 class PurchaseController
 {

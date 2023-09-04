@@ -34,12 +34,12 @@ class Request
         global $request102392039s2k20202;
         $request102392039s2k20202 = $newRequest;
         $request102392039s2k20202["query_parameters"] = $_GET;
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $request102392039s2k20202["input_parameters"] = $_POST;
-        } else {
-            $request102392039s2k20202["input_parameters"] = json_decode(file_get_contents("php://input"), 1);
-        }
+        $request102392039s2k20202["input_parameters"] = json_decode(file_get_contents("php://input"), 1);
+        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        //     $request102392039s2k20202["input_parameters"] = $_POST;
+        // } else {
+        //     $request102392039s2k20202["input_parameters"] = json_decode(file_get_contents("php://input"), 1);
+        // }
         $request102392039s2k20202["headers"] = $_SERVER;
     }
 

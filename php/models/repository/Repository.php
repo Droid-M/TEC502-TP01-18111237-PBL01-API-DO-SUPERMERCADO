@@ -95,7 +95,7 @@ abstract class Repository
      * @param array $columns
      * @return array|mixed|false|Collection<string, Model>
      */
-    public function getAllById(array $columns = [])
+    public function getAll(array $columns = [])
     {
         $columnList = empty($columns) ? '*' : implode(', ', $columns);
         $stmt = $this->db->prepare("SELECT $columnList FROM $this->tableName");
@@ -270,7 +270,7 @@ abstract class Repository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function update(array $data, $whereClause): bool
+    public function update(array $data, string $whereClause): bool
     {
         if (empty($data) || empty($whereClause)) {
             return false;
