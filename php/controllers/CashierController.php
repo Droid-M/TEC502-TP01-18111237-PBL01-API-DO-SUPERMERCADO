@@ -7,6 +7,7 @@ use php\models\entities\Cashier;
 use php\services\CashierService;
 use php\services\Database;
 use php\services\Request;
+use php\validators\CheckBlockStatusRequestValidator;
 use php\validators\ManageCashierRequestValidator;
 
 class CashierController
@@ -46,8 +47,13 @@ class CashierController
         }
     }
 
-    public function checkStatus()
+    public function checkBlockStatus()
     {
-        return json(200, 'Status retornado com sucesso!', CashierService::checkIfIsBlocked(Request::getPathParameters('id')));
+        CheckBlockStatusRequestValidator::validate();
+        return json(
+            200,
+            'Status retornado com sucesso!',
+            ['is_blocked' => CashierService::checkIfIsBlockedByIp(Request::getClientIp())]
+        );
     }
 }
