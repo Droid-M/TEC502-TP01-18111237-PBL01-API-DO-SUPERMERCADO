@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
   && docker-php-ext-install zip pdo pdo_mysql
 
 # Copia os arquivos do seu projeto para o diretório /var/www/html no container
-COPY . /var/www/html
+COPY php/ /var/www/html
 
 # Define o diretório de trabalho como /var/www/html
 WORKDIR /var/www/html

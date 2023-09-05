@@ -1,25 +1,31 @@
 version: "3"
 services:
-  # Serviço do PHP com Apache
-  php:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:80" # Mapeia a porta 80 do container para a porta 8080 do host
-    volumes:
-      - .:/var/www/html # Mapeia o diretório do projeto para o diretório do container
-
   # Serviço do MySQL
   mysql:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      #MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
+      #MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
       - "3306:3306" # Mapeia a porta 3306 do container para a porta 3306 do host
+
+# Serviço do PHP com Apache
+  php:
+    container_name: tec502
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8082:80" # Mapeia a porta 80 do container para a porta 8080 do host
+    volumes:
+      - ./php:/var/www/html # Mapeia o diretório do projeto para o diretório do container
+    links:
+      - "mysql:database"
+    depends_on:
+      - mysql
 
   # Serviço do PHPMyAdmin
   phpmyadmin:
@@ -31,3 +37,4 @@ services:
       - "8081:80" # Mapeia a porta 80 do container do PHPMyAdmin para a porta 8081 do host
     depends_on:
       - mysql
+      
