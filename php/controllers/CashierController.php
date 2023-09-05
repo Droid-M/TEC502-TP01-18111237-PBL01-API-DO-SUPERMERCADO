@@ -20,10 +20,14 @@ class CashierController
     public function register()
     {
         try {
-            CashierService::register(Request::getClientIp());
-            return Database::transaction(function () {
-                return json(201, "Caixa registrado com sucesso!", CashierService::getCashierByIp(Request::getClientIp())->toArray());
-            });
+            $clientIp = Request::getClientIp();
+            if (is_null($cashier = CashierService::getCashierByIp($clientIp))) {
+                CashierService::register($clientIp);
+                return Database::transaction(function () use (&$clientIp) {
+                    return json(201, "Caixa registrado com sucesso!", CashierService::getCashierByIp($clientIp)->toArray());
+                });
+            } else 
+                return json(200, "Caixa foi registrado anteriormente!", $cashier->toArray());
         } catch (Exception $e) {
             return json(400, "Falha ao registrar caixa no sistema!");
         }

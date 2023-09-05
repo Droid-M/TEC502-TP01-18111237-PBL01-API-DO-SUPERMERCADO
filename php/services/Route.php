@@ -196,12 +196,12 @@ class RouteRegister
 
     public function put()
     {
-        return static::registerEndpoint(PUT_METHOD);
+        return env("ONLY_BASIC_HTTP_METHODS") ? static::registerEndpoint(POST_METHOD) : static::registerEndpoint(PUT_METHOD);
     }
 
     public function delete()
     {
-        return static::registerEndpoint(DELETE_METHOD);
+        return env("ONLY_BASIC_HTTP_METHODS") ? static::registerEndpoint(POST_METHOD) : static::registerEndpoint(PUT_METHOD);
     }
 
     /**
