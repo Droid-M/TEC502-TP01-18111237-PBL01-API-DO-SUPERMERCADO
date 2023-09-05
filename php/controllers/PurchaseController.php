@@ -70,7 +70,7 @@ class PurchaseController
         return json(
             200,
             'Histórico de compras consulado com sucesso!',
-            PurchaseService::getPurchaseHistory(false)->toArray()
+            PurchaseService::getPurchaseHistory(strtolower((string) Request::getQueryParameters('order')) == 'asc')->toArray()
         );
     }
 }
