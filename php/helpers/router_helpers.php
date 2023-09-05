@@ -1,7 +1,5 @@
 <?php
 
-require_once "../helpers/string_helpers.php";
-
 function split_endpoint(string $route)
 {
     return explode('/', trim(remove_repeated_chars($route), '/'));
