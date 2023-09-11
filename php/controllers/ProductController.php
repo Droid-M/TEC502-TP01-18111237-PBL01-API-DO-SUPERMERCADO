@@ -16,8 +16,8 @@ class ProductController
     {
         return json(
             200,
-            'Produtos registrados com sucesso!',
-            ['products' => ProductService::getAll()->toArray()]
+            'Produtos consultados com sucesso!',
+            ProductService::getAll()->toArray()
         );
     }
 
@@ -32,7 +32,8 @@ class ProductController
                 );
             });
         } catch (Exception|TypeError $e) {
-            return json(500, $e->getMessage());
+            // return json(500, $e->getMessage());
+            return json(500, 'Falha ao atualizar dados do produto');
         }
     }
     
@@ -43,12 +44,13 @@ class ProductController
             return Database::transaction(function () {
                 return json(
                     200, 
-                    'Produto atualizado com sucesso!',
-                    ['products' => ProductService::registerProducts(Request::getInputParameters('products'))->toArray(0)]
+                    'Registro de produto(s) efetuado com sucesso!',
+                    ProductService::registerProducts(Request::getInputParameters('products'))->toArray(0)
                 );
             });
         } catch (Exception|TypeError $e) {
-            return json(500, $e->getMessage());
+            // return json(500, $e->getMessage());
+            return json(500, 'Falha ao registrar produtos');
         }
     }
 }

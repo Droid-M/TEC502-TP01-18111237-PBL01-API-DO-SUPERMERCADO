@@ -23,12 +23,11 @@ class PurchaseController
                 return json(
                     201,
                     'Dados da compra registrados com sucesso!',
-                    [
-                        'purchase' => PurchaseService::registerNewPurchase(
-                            $cashier->id,
-                            Request::getInputParameters('products_bar_code')
-                        )->toArray()
-                    ]
+                    PurchaseService::registerNewPurchase(
+                        $cashier->id,
+                        Request::getInputParameters('products_bar_code')
+                    )->toArray()
+                    
                 );
             });
         } catch (Exception | TypeError $e) {
@@ -69,7 +68,7 @@ class PurchaseController
     {
         return json(
             200,
-            'Histórico de compras consulado com sucesso!',
+            'Histórico de compras consultado com sucesso!',
             PurchaseService::getPurchaseHistory(strtolower((string) Request::getQueryParameters('order')) == 'asc')->toArray()
         );
     }

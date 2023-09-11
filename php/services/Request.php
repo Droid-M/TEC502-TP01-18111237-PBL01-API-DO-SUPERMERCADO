@@ -9,8 +9,17 @@ $request102392039s2k20202 = [];
 
 class Request
 {
+    public static function getClientMac()
+    {
+        if (is_null($mac = static::getHeaders('CLIENT_MAC_ADDRESS')))
+            abort(403, 'Endereço MAC (CLIENT-MAC-ADDRESS) deve ser informado no cabeçalho da requisição!');
+        return $mac;
+    }
+
     public static function getClientIp()
     {
+        if (env("FORCE_MAC_USE") == 1)
+            return static::getClientMac();
         if (!app_in_localhost())
             return $_SERVER['REMOTE_ADDR'];
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {

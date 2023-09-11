@@ -1,3 +1,7 @@
+# HTID:22215615: DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES BELOW
+php_value display_errors 1
+# DO NOT REMOVE OR MODIFY THIS LINE AND THE LINES ABOVE HTID:22215615:
+
 RewriteEngine On
 RewriteBase /
 RewriteRule ^(.+)$ index.php [QSA,L]
