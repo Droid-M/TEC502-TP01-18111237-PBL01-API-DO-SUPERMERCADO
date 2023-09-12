@@ -1,23 +1,21 @@
 _id: env_16655376d83095fd02a50734cbd8da1f145ea145
 type: Environment
 parentId: wrk_350e03542021473984982e447e3db737
-modified: 1693786972126
+modified: 1694371488212
 created: 1693492046164
 name: Base Environment
 data:
-  base_url: http://localhost:8000
-  api_url: "{{ _.base_url }}/api"
   GLOBAL_HEADERS:
     Accept: application/json
     Content-Type: application/json
+    CLIENT-MAC-ADDRESS: TEST-MAC-USAGE123
 dataPropertyOrder:
   "&":
-    - base_url
-    - api_url
     - GLOBAL_HEADERS
   "&~|GLOBAL_HEADERS":
     - Accept
     - Content-Type
+    - CLIENT-MAC-ADDRESS
 color: null
 isPrivate: false
 metaSortKey: 1693492046165

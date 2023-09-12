@@ -1,17 +1,17 @@
 _id: req_29102e877d884a3b801db1afff3997f6
 type: Request
 parentId: fld_b4a5e145923a44e48d4358c9f24a6d24
-modified: 1693859951654
+modified: 1694376577297
 created: 1693794211440
-url: "{{ _.api_url }}/cashiers/28/manage"
+url: "{{ _.api_url }}/cashiers/5/manage"
 name: bloqueia ou desbloqueia caixa
 description: ""
-method: PUT
+method: POST
 body:
   mimeType: application/json
   text: |-
     {
-    	"status": "block"
+    	"status": "release"
     }
 parameters: []
 headers:
@@ -25,7 +25,7 @@ headers:
 authentication:
   type: apikey
   disabled: false
-  key: admin_token
+  key: admin-token
   value: admin123
   addTo: header
 metaSortKey: -1691730482625.5

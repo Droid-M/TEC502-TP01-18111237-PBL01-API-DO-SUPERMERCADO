@@ -1,16 +1,21 @@
-_id: req_8606805f84974c70afb2a7086f8b4ef9
+_id: req_1848a9e580df4b0c9cdba043d0d5c5b1
 type: Request
 parentId: fld_b4a5e145923a44e48d4358c9f24a6d24
-modified: 1694221545862
-created: 1693857311314
-url: "{{ _.api_url }}/products"
-name: lista produtos registrados
+modified: 1694132560463
+created: 1693871665118
+url: "{{ _.api_url }}/purchases/history"
+name: consulta histórico de compras
 description: ""
 method: GET
 body:
   mimeType: application/json
   text: ""
-parameters: []
+parameters:
+  - id: pair_3feedc09bd784f85bd7506823be7eba7
+    name: order
+    value: asc
+    description: ""
+    disabled: true
 headers:
   - id: pair_8406995a76154519a5d4a8aace18345c
     name: Accept
@@ -25,7 +30,7 @@ authentication:
   key: admin-token
   value: admin123
   addTo: header
-metaSortKey: -1691730482650.5
+metaSortKey: -1690189071406.6875
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true

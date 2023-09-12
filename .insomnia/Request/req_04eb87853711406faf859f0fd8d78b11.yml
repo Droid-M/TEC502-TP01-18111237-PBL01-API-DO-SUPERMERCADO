@@ -1,15 +1,31 @@
-_id: req_8606805f84974c70afb2a7086f8b4ef9
+_id: req_04eb87853711406faf859f0fd8d78b11
 type: Request
 parentId: fld_b4a5e145923a44e48d4358c9f24a6d24
-modified: 1694221545862
-created: 1693857311314
-url: "{{ _.api_url }}/products"
-name: lista produtos registrados
+modified: 1694228242454
+created: 1693861304002
+url: "{{ _.api_url }}/products/new"
+name: registra produtos
 description: ""
-method: GET
+method: POST
 body:
   mimeType: application/json
-  text: ""
+  text: |-
+    {
+    	"products": [
+    		{
+    			"name": "Biscoito",
+    			"stock_quantity": 3,
+    			"price": 2,
+    			"bar_code": "123456789"
+    		},
+    		{
+    			"name": "Peixe",
+    			"stock_quantity": 2,
+    			"price": 19,
+    			"bar_code": "natjepl10"
+    		}
+    	]
+    }
 parameters: []
 headers:
   - id: pair_8406995a76154519a5d4a8aace18345c
@@ -25,7 +41,7 @@ authentication:
   key: admin-token
   value: admin123
   addTo: header
-metaSortKey: -1691730482650.5
+metaSortKey: -1690409273009.375
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true

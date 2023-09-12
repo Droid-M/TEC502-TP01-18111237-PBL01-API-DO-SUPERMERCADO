@@ -1,0 +1,16 @@
+_id: env_ced0c23b85ab4e10b4c4aea6e01493a7
+type: Environment
+parentId: env_16655376d83095fd02a50734cbd8da1f145ea145
+modified: 1693915684102
+created: 1693915649582
+name: server
+data:
+  base_url: https://tec502-supermarket-test.000webhostapp.com
+  api_url: "{{ _.base_url }}/api"
+dataPropertyOrder:
+  "&":
+    - base_url
+    - api_url
+color: null
+isPrivate: false
+metaSortKey: 1693912722749

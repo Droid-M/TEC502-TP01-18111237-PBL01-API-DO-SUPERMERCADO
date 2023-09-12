@@ -1,20 +1,20 @@
-_id: req_8606805f84974c70afb2a7086f8b4ef9
+_id: req_d6eba34dcd3944158db7d0df40d6345a
 type: Request
-parentId: fld_b4a5e145923a44e48d4358c9f24a6d24
-modified: 1694221545862
-created: 1693857311314
-url: "{{ _.api_url }}/products"
-name: lista produtos registrados
+parentId: fld_4f160eaad0e14a6a940dba22dca420b9
+modified: 1694376722154
+created: 1693868498647
+url: "{{ _.base_url }}/api/purchases/38/cancel"
+name: cancela compra
 description: ""
-method: GET
+method: POST
 body:
   mimeType: application/json
   text: ""
 parameters: []
 headers:
-  - id: pair_8406995a76154519a5d4a8aace18345c
-    name: Accept
-    value: application/json
+  - id: pair_f61af8b414694140b98a9785a5c668d2
+    name: CLIENT_IP
+    value: 192.168.160.2244
     description: ""
     disabled: false
   - name: Content-Type
@@ -22,10 +22,10 @@ headers:
 authentication:
   type: apikey
   disabled: false
-  key: admin-token
-  value: admin123
+  key: CASHIER-TOKEN
+  value: cashier123
   addTo: header
-metaSortKey: -1691730482650.5
+metaSortKey: -1692246423173.3203
 isPrivate: false
 settingStoreCookies: true
 settingSendCookies: true

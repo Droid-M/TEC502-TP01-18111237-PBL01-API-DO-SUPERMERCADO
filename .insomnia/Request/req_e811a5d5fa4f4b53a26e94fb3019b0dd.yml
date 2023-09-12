@@ -1,7 +1,7 @@
 _id: req_e811a5d5fa4f4b53a26e94fb3019b0dd
 type: Request
 parentId: fld_b4a5e145923a44e48d4358c9f24a6d24
-modified: 1693794237111
+modified: 1694137777425
 created: 1693492147790
 url: "{{ _.api_url }}/cashiers"
 name: lista caixas conectados
@@ -9,10 +9,7 @@ description: ""
 method: GET
 body:
   mimeType: application/json
-  text: |-
-    {
-    	"ID": "123"
-    }
+  text: ""
 parameters: []
 headers:
   - id: pair_8406995a76154519a5d4a8aace18345c
@@ -22,10 +19,11 @@ headers:
     disabled: false
   - name: Content-Type
     value: application/json
+    id: pair_7b8fb9f498294e949709141f19669360
 authentication:
   type: apikey
   disabled: false
-  key: admin_token
+  key: admin-token
   value: admin123
   addTo: header
 metaSortKey: -1691730482675.5
